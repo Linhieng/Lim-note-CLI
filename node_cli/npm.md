@@ -86,3 +86,7 @@ full name    | aliases | 介绍说明
 - 修改默认 `package.json` 中的 `version`
 
       npm c set init-version "0.0.1"
+
+- 查看所有配置项的值
+
+      npm config ls -l
