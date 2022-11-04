@@ -10,6 +10,9 @@
 $ git config --list
 # 查看配置信息
 
+$ git config --list --show-origin
+# 列出所有配置, 并指定来源
+
 $ git config (--edit | -e)
 # 编辑配置文件
 
@@ -45,4 +48,12 @@ $ git config (http.proxy | https.proxy) <http-url>
 $ git config core.editor 'vim'
 # 将默认编辑器改为 vim
 
+$ git config [--global] --edit
+#　打开文件的方式编辑全局配置
+
+$ git config core.editor "code --wait"
+# 将默认编辑器修改为 vscode, 如果想要打开新窗口, 可以加上 --new-window 参数
+
+$ git config --unset core.editor
+# 重置默认编辑器(重置为 vim)
 ```
