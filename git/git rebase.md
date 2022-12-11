@@ -3,9 +3,9 @@
 
 ```bash
 
-$ git rebase -i <place>
-# <place> 是 git 能够识别的一个位置。
-# -i 参数，能够改变 <place> 到 HEAD 这段历史记录的顺序（不包括 <place> 和 HEAD）。
+$ git rebase (-i | --interactive) <place>
+# https://git-scm.com/docs/git-rebase#:~:text=Make%20a%20list%20of%20the%20commits%20which%20are%20about%20to%20be%20rebased
+# 可以对某次提交进行相关操作, 比如修改某次提交的 commit message
 
 $ git rebase <branch-name>
 # 设：参数中的 <branch-name> 为 br，当前所在分支为 main.
@@ -15,6 +15,5 @@ $ git rebase <branch-name>
 
 $ git rebase <base-branch> <change-branch>
 # 第一个参数，是作为“基”的存在，第二个参数，是作为“变”的存在。该命令与只有一个参数的 rebase 不同，因为该命令改变的不止一次 commit，而是从 base-branch 和 change-branch 的共同祖先节点算起，到 change-branch，一并变基到 base-branch。
-
 
 ```
