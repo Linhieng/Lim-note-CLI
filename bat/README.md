@@ -42,39 +42,15 @@ echo 只含扩展名: %~x0
 
 ## 常用命令
 
-- `PAUSE`
-- `REM`
-- `ECHO`
-- `EXIT`
+具体使用请通过 `/?` 查阅。
 
-- `GOTO`
-    ```bat
-    goto label_name
-    echo miss
-    :label_name
-    echo catch
-    ```
-- `IF`
-    ```bat
-    if "%name%"=="John" (
-        echo Hello, John!
-    ) else (
-        echo Hello, stranger!
-    )
-    ```
-- `FOR`
-    ```bat
-    for %%i in (1 3 5 7 9) do (
-        echo %%i
-    )
-    for /L %%i in (1,2,9) do (
-        echo %%i
-    )
-    ```
-
-- `SETLOCAL`, `ENDLOCAL`
-- `SHIFT`
-- `CALL`
+- `pause`
+- `echo`
+- `exit`
+- `set`
+- `goto`
+- `if`
+- `for` 暂时不建议在 for 中使用 `set`
 
 ## 隐藏窗口运行
 
