@@ -1,49 +1,80 @@
-## 基础
+## 变量
 
 ```bat
-@REM 这里是注释。
-
-@REM 通过 set 设置变量
-set name=John
-
-@REM bat 中每一行都是 cmd 中的命令
-echo My name is %name%
-```
-
-### if
-```bat
-if "%name%"=="John" (
-    echo Hello, John!
-) else (
-    echo Hello, stranger!
-)
-```
-
-### for
-
-通过 `for /?` 获取更详细的内容
-
-```bat
-@REM 输出 1 3 5 7 9
-for %%i in (1 3 5 7 9) do (
-    echo %%i
-)
-@REM 或者利用 /L 更方便的输出 1 3 5 7 9
-for /L %%i in (1,2,9) do (
-    echo %%i
-)
-```
-
-### goto
-
-```bat
+@REM 这是注释，下面一行表示不回显
 @echo off
+
+@REM 每一行都是一条命令行语句，比如下面这样。
 chcp 65001 > nul
-goto Label1
-echo "我不会被输出"
-:Label1
-echo "直接输出我"
+
+@REM 使用 set 创建变量
+@REM 等号左边不允许有空格
+@REM 等号右边的空格，引号都会被会被认为是字符
+set a=hello, world!
+
+@REM 通过 %% 包括变量可以使用该变量。下面代码将会输出 hello, world!
+echo %a%
+
+@REM 拼接变量时，直接放在一起，多余的空格同样会被识别为字符。
+set path=C:\Program Files\
+set file=WinRAR\
+set target=%path%%file%
+echo 截取变量 target: [%target:~1,-4%]
+
+@REM 常见的终端命令，可以直接在 bat 脚本中使用。但使用时就需要注意变量中的空格，这个时候就可以通过引号包括起来。
+
+cd %target%
+
+@REM bat 中常见的内置变量有：
+echo 当前目录: %CD%
+echo 星期+日期: %DATE%
+echo 当前时间: %TIME%
+echo 0-32767随机数字: %RANDOM%
+echo 传入的第一个参数: %1
+echo error level: %ERRORLEVEL%
+
+echo 脚本路径: %0
+echo 脚本目录: %~dp0
+echo 完整文件名: %~nx0
+echo 不含扩展名: %~n0
+echo 只含扩展名: %~x0
 ```
+
+## 常用命令
+
+- `PAUSE`
+- `REM`
+- `ECHO`
+- `EXIT`
+
+- `GOTO`
+    ```bat
+    goto label_name
+    echo miss
+    :label_name
+    echo catch
+    ```
+- `IF`
+    ```bat
+    if "%name%"=="John" (
+        echo Hello, John!
+    ) else (
+        echo Hello, stranger!
+    )
+    ```
+- `FOR`
+    ```bat
+    for %%i in (1 3 5 7 9) do (
+        echo %%i
+    )
+    for /L %%i in (1,2,9) do (
+        echo %%i
+    )
+    ```
+
+- `SETLOCAL`, `ENDLOCAL`
+- `SHIFT`
+- `CALL`
 
 ## 隐藏窗口运行
 
