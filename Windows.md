@@ -17,6 +17,17 @@ Window 下的任意命令，都可以通过 `/?` 来查看更详细的内容，�
 - `PNPUTIL` 能加载驱动
     - 加载备份的驱动：`PNPUTIL /add-driver E:\drivers\*inf" /subDirs /install /reboot`
 
+## 🍕 `DiskPart`
+
+使用 `help [command]` 查看帮助
+
+- `DiskPart` 进入
+- `list disk` 可查看当前选中的磁盘
+- `attributes disk` 查看相关属性。`attributes` 可简写成 `att`。
+    - `attributes disk set readonly` 移动硬盘立马生效，移动磁盘需重新连接。
+    - `attributes disk clear readonly` 均立马生效
+- `select disk <ID>`
+
 ## 🍕 快速运行 win + r
 
 有了 win+s 搜索功能后， win+r 使用频率少了很多
