@@ -1,0 +1,1 @@
+bat 中执行 ps1 脚本：`powershell -ExecutionPolicy ByPass -File "bat.ps1"`
