@@ -1,0 +1,4 @@
+# Custom Dictionary Words
+ffprobe
+nokey
+noprint

@@ -1,8 +1,17 @@
 {
+    "editor.wrappingIndent": "deepIndent",
     "cSpell.words": [
         "DISM",
         "hashfile",
         "SCHTASKS",
         "SIGI"
-    ]
+    ],
+    "cSpell.customDictionaries": {
+        "custom-dictionary-workspace": {
+            "name": "custom-dictionary-workspace",
+            "path": "${workspaceFolder:Accumulate-CLI}/.cspell/custom-dictionary-workspace.txt",
+            "addWords": true,
+            "scope": "workspace"
+        }
+    }
 }
