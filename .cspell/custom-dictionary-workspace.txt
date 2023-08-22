@@ -1,4 +1,10 @@
 # Custom Dictionary Words
+ffplay
 ffprobe
+libvorbis
+libx
+loglevel
+noaccurate
 nokey
 noprint
+sseof
