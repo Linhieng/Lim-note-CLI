@@ -30,6 +30,10 @@ cmd 中的任何命令，都可以通过 `<command> /?` 或者 `help <command>` 
 - `PNPUTIL /add-driver <glob_patterns> /subDirs /install /reboot`
     - 加载（备份的）驱动，比如 `PNPUTIL /add-driver E:\drivers\*inf" /subDirs /install /reboot`
 
+简单的命令              | 说明
+------------------------|-------------------------------------------
+`tree <path> [\F] [\A]` | 输出目录。`\F` 表示包含文件。`\A` 表示使用 ASCII 字符构成 tree
+
 ## 文件管理
 
 创建文件夹
