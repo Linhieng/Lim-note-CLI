@@ -1,5 +1,20 @@
 cmd 中的任何命令，都可以通过 `<command> /?` 或者 `help <command>` 来查看该命令的使用方式。
 
+相关操作符（暂时没有找到官方文档中对这些操作符的具体说明，不过找到一个有关 [&&](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/cmd#remarks) 的说明，）
+```sh
+<command1> && <command2>
+# command1 正确时才会执行 command2
+
+<command1> || <command2>
+# command1 出错时才会执行 command2
+
+<command1> & <command2>
+# 两个命令都会执行。
+
+<command1> | <command2>
+# 两个命令都会执行。但只会输出 command1 的标准错误输出。
+```
+
 ## 收集的一些命令
 
 - `CertUtil -hashfile <路径> [<哈希算法>]`
@@ -19,9 +34,10 @@ cmd 中的任何命令，都可以通过 `<command> /?` 或者 `help <command>` 
 
 创建文件夹
 ```sh
-md <dir_path>
+md "<dir_path>"
 # 或者
-mkdir <dir_path>
+mkdir "<dir_path>"
+# 注意，路径中有空格时需要使用双引号括起来，不能使用单引号。
 ```
 
 创建文件。暂时没有找到官方提供的命令，所以只能通过重定向写入符号来创建文件，下面是一些案例
