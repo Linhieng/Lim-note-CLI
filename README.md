@@ -31,5 +31,7 @@
     - [npm CLI commands 官方文档](https://docs.npmjs.com/cli/v8/commands)
     - [git 官方文档](https://git-scm.com/docs)
     - [ffmpeg 官方文档](https://ffmpeg.org/ffmpeg.html)
+    - [powershell 示例脚本](https://learn.microsoft.com/zh-cn/powershell/scripting/samples/sample-scripts-for-administration?view=powershell-7.3)
+    - [cmd 官方文档](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/windows-commands)
 - 一些单一的知识点或者简单的知识点会直接通过 Google/Bing 进行查阅。
 - 来自“远古”的笔记。
