@@ -1,5 +1,7 @@
 # Custom Dictionary Words
 chcp
+Exif
+exiftool
 ffplay
 ffprobe
 libvorbis
