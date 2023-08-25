@@ -4,26 +4,32 @@
 
 ## commit 规范
 
-语法格式：
-```
-<type>[-<scope>]: <description>
+格式要求：
+
+```syntax
+<type>[-<scope>]: [<description>]
 
 [<optional body>]
 ```
+
 说明：
+
 - `<type>`
     - 指明本次 commit 的类型，目前有以下可用值：
+        - `init`: 表示开启新的笔记类型，即创建一个新的目录。
         - `add`: 表示添加新的知识点笔记。
         - `update`: 对已有的知识点笔记进行更新说明。
         - `chore`: 无关紧要的内容，比如修改 .vscode 内容、.gitignore 内容。
-        - `feater`: 表示开启新的笔记类型，即创建一个新的目录。
         - `refactor`: 没有对内容进行主要更改，可能是重命名文件，也可能是移动某些文件位置。
 - `<scope>`
-    - 更改的范围，只要求指明根目录下的文件夹，比如 `windows`, `shell`。
-    - 如果是 chore 类型，则可以不提供范围。但如果是 add，则一定要提供！
-- `<description>`：基本的描述信息。
-- `<optional body>`：更详细的说明。
+    - 更改的范围，比如 `windows`, `shell`。
+    - 对于 `add`, `update` 和 `init` 提交类型，要求一定要提供 `<scope>`
+- `<description>`
+    - 可选，基本的描述信息。
+- `<optional body>`
+    - 可选，更详细的说明。
 
 案例：
+
 - `add-windows: 如何修改 powershell 命令行提示符`
 - `chore: 规定 commit 规范`
