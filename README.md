@@ -31,7 +31,7 @@
 
 ## 仓库根目录下的文件和文件夹说明
 
-```
+```text
 |   .gitignore              执行哪些文件会被 git 忽略掉。
 |   CODE_OF_CONDUCT.md      社区行为准则。
 |   CONTRIBUTING.md         贡献指南。比如当你发现漏洞时，应该发送邮件说明而不是提 issue。

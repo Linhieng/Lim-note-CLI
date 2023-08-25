@@ -6,11 +6,11 @@ Window 上的 png 格式文件不支持“标题”、“作者”、“备注�
 
 ## 案例
 
-```powershell
-> exiftool.exe a.png
+```sh
+$ exiftool.exe a.png
 # 查看 a.png 图片的元信息
 
-> exiftool.exe -XPComment="this is a Comment" a.jpg
+$ exiftool.exe -XPComment="this is a Comment" a.jpg
 # 修改 XP Comment 元信息。虽然 tag name 中有空格，但是在使用时直接忽略空格即可，不要用引号之类的将空格包裹住。
 # 此外，通过命令行的方式似乎不支持中文……。
 # 虽然可以用这种方式为 .png 图片添加元信息，但 Window 上并不会显示。

@@ -1,25 +1,18 @@
-<style>
-    h2::before {
-        content: '🍕 '
-    }
-    h3::before {
-        content: '🍕🍕 '
-    }
-    li > ul > li {
-        list-style: none;
-    }
-</style>
+<!-- spell-checker:word cuda cuvid hwaccels -->
+<!-- spell-checker:enableCompoundWords -->
 
-## 案例
+# 积累的 FFmpeg 使用案例
 
 案例中的说明会尽量简单一点，从而尽可能确保新手也能看懂。这也意味着某些选项的解释可能不够严谨。
 
-### `ffprobe` 获取音频总时长
+## `ffprobe` 获取音频总时长
 
 ```sh
 ffprobe -v error -select_streams a:0 -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal <input_url>
 ```
+
 说明：
+
 - `-v error`
     - 控制消息输出级别为 `error`。在该级别下，info 类型的消息不会输出。banner（包括版权、版本、依赖库相关消息）也不会输出。如果想要输出 info 而不输出 banner，可以使用 `-hide_banner` 选项。
 - `-select_streams a:0`
@@ -36,13 +29,16 @@ ffprobe -v error -select_streams a:0 -show_entries format=duration -of default=n
     - 没有这个选项时，输出的时长会将是一个数字，比如这样 `275.043265`。
     - 该选项的作用就是将这个数字以 `HH:MM:SS.MS` 的方式输出，比如这样 `0:04:35.043265`。
 
-### `ffmpeg` 剪辑音频
+## `ffmpeg` 剪辑音频
 
 剪辑音频时，我们一般会需要音频的总时长信息。但某些音频的时长和实际的时长可能是对不上的，这个时候就需要先对音频进行重新编码。命令如下：
+
 ```sh
 ffmpeg -y -v error -i <input_url> <output_url>
 ```
+
 说明：
+
 - `-y`
     - 当输出文件 `<output_url>` 已经存在时，会询问是否要覆盖。
     - 该选项的作用就是：不需要询问，直接覆盖。
@@ -53,6 +49,7 @@ ffmpeg -y -v error -i <input_url> <output_url>
 - 由于没有指定任何编码选项，默认就是会重新编码。具体编码为什么格式取决于 `<output_url>` 的后缀名。
 
 剪辑音频其实就是指定一个时间段。这就需要两个值：开始时间和结束时间。开始时间可以通过 `-ss` 或者 `-sseof` 指定，结束时间可以通过 `-to` 指定。此外还提供了持续时间，通过 `-t` 指定。FFmpeg 中时间的流向始终是从小到大的，所以开始时间不能大于结束时间，否则会报错或者直接忽略结束时间。下面是一些案例：
+
 ```sh
 $ ffmpeg -y -hide_banner -to 10 -i input.mp3 output.mp3
 # 该命令没有提供开始时间，故使用默认开始时间是 0。结束时间指定为 10，表示第 10 秒。
@@ -80,20 +77,24 @@ $ ffmpeg -y -hide_banner -sseof -20 -to 60 -i input.mp3 output.mp3
 ```
 
 如果你自己运行了上面的命令，你会发现处理速度似乎很慢，这是因为前面的命令明确声明编码方式，那么 FFmpeg 默认就会重新编码，这就是速度慢的原因。想要让速度变快，可以告诉 FFmpeg 不要重新编码，也就是直接拷贝原来的。方法是借助 `-c` 选项，该选项是 `-codec` 的简写，语法如下：
+
 ```sh
 ffmpeg -i <input_url> -c copy <output_url>
 ```
+
 说明：
+
 - `-c copy`
     - 因为 `-c` 后面有 `output_url`，所以此处的 `-c` 表示指定编码方式。如果将 `-c` 写在 `-i <input_url>` 前面，则表示指定解码方式。
     - `copy` 是一个特殊的编码格式，表示不会重新编码，直接复制原来的，这样速度更快。
 - 直接复制时会有一些副作用，比如最终的时长会有一些误差，无法压缩文件大小等。（没错，重新编码可以压缩文件大小，并且保证视觉上看不出效果）。
 
-### `ffmpeg` 提取视频中的音频进行剪辑
+## `ffmpeg` 提取视频中的音频进行剪辑
 
 提取视频中的音频进行剪辑和 [剪辑音频](#ffmpeg-剪辑音频) 的区别只在于，对视频进行操作时你需要明确指定你要处理的是音频，而不是视频和字幕等内容。也就是选中音频流。
 
 想要选中音频流，需要借助 `-map` 选项。该选项功能很强大，具体使用不会在这里细说。简单举一个例子就明白了它的基本使用：
+
 ```sh
 $ ffmpeg -hide_banner -i input.mkv -map 0:a:0 output.mp3
 # 0:a:0 中，第一个 0 表示的是第一个输入文件，也就是 input.mkv
@@ -102,11 +103,34 @@ $ ffmpeg -hide_banner -i input.mkv -map 0:a:0 output.mp3
 ```
 
 知道如何选取音频了，那么就可以很方便的提取视频中的音频了，下面的语法表示提取视频中的所有音频如下：
+
 ```sh
 ffmpeg -i <input_url> -map 0:a <output_audio_url>
 ```
 
 如果只想提取某一段，语法如下：
+
 ```sh
 ffmpeg -ss 10 -to 100 -i <input_url> -map 0:a <output_audio_url>
 ```
+
+## 压缩视频 mkv 视频（保存字幕）
+
+`ffmpeg -i input.mkv -map 0 -c:s copy output.mkv` ✔️
+&emsp;&emsp;`-map 0` 选择了所有流，效果是保存了所有的字幕。默认只会保留第一个字幕
+&emsp;&emsp;`-c:s copy` 复制原视频字幕格式，效果是保存字幕为文本格式而不是图片格式
+
+## 提取字幕
+
+`ffmpeg -i input.mkv -map 0:s:0 01.ass` ✔️
+&emsp;&emsp;`-map 0:s:0` 选择流（第一个视频的第一个字幕）
+&emsp;&emsp;注意单个 ass 文件不支持同时保存多个字幕。所以 `ffmpeg -i input.mkv -map 0:s 01.ass` 是无法保存所有字幕的。
+
+## “兔子洞”
+
+**还是不要想着使用 GPU 加速了。难搞。**
+
+- `-preset <string>`
+    - `<string>` 可选值有 `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium`, `slow`, `slower`, `veryslow`, `placebo` 越后执行速度越慢，压缩率越高。
+- `ffmpeg -hwaccels` 查看可用的硬件加速方法
+- `ffmpeg -codecs | findStr cuvid` 查看支持 cuda 的编码器
