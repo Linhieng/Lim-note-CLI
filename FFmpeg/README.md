@@ -301,6 +301,7 @@ show 开头的选项都是用来查看 section 的，比如下面这样：
 `-show_entries stream`                                     | 等同于 `-show_stream`，查看所有 `[STREAM]`
 `-show_entries format=size:stream=index`                   | 通过冒号 `:` 可以拼接多个 section
 `-show_entries format=duration,size:stream=index,channels` | 连用
+`-show_entries format_tags=title,comment`                  | 获取 TAG 时需要添加 `_tags` 后缀。
 
 一般会再结合 `-of <writer_name>[=writer_options]` 来省略一些冗余信息。比如下面这样
 ```sh
