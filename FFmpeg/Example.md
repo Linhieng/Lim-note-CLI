@@ -126,6 +126,27 @@ ffmpeg -ss 10 -to 100 -i <input_url> -map 0:a <output_audio_url>
 &emsp;&emsp;`-map 0:s:0` 选择流（第一个视频的第一个字幕）
 &emsp;&emsp;注意单个 ass 文件不支持同时保存多个字幕。所以 `ffmpeg -i input.mkv -map 0:s 01.ass` 是无法保存所有字幕的。
 
+## mkv 内封字幕
+
+```sh
+ffmpeg -hide_banner -i in.mp4 -i CHS-ENG.srt -i eng.srt  -c:v copy -c:a copy -c:s copy -map 0 -map 1 -map 2 -metadata:s:s:0 language=chi -metadata:s:s:0 title="中英双语字幕" -metadata:s:s:1 language=eng -metadata:s:s:1 title="纯英字幕"  out.mkv
+```
+
+简单说明：
+
+- language 表示语言标识、比如 eng 标识英文，chi 标识中文。
+- title 是字幕标题，可以作为字幕的简单描述来使用。
+- `-metadata:s:s:1` 中的第一个 s 表示设置字幕的元信息，第二个 s 和后面的数字是用来指定第一个字幕流的。
+- mkv 只是一个盒子，用来存放 mk4 和两个字幕。
+
+## 内嵌字幕
+
+```sh
+ffmpeg -i input.mp4 -vf "subtitles=eng.srt" -c:v libx264 -c:a copy output_with_embedded_subs.mp4
+```
+
+⚠️还没试过。先放在这里，以后要用到时容易找。
+
 ## “兔子洞”
 
 **还是不要想着使用 GPU 加速了。难搞。**
