@@ -17,3 +17,14 @@ $ git clone -c http.proxy=<proxy-url> <https-url>
 # <proxy-url> 示例：http.proxy="127.0.0.1:7890"
 
 ```
+
+## `--shallow-since` 克隆某个时间点之后的内容
+
+```sh
+$ git clone --shallow-since="1 week" <url>
+# 克隆最近一周的
+# 如果提示 fatal: error processing shallow info: 4，则可能是因为对应日期之后，没有提交内容。
+
+$ git clone --shallow-since="2023-09-06" <url>
+# 克隆 2023-09-06 日之后的
+```
