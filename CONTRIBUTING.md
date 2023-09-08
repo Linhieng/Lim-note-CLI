@@ -7,11 +7,13 @@
 格式要求：
 
 ```syntax
-<type>[-<scope>]: [<description>]
+<type>(<scope?>): [<description>]
 
 [<optional body>]
 ```
 
+TODO: 确定各种不同类型仓库的 commit 规范。笔记类型仓库、代码类型仓库、项目类型仓库等等，各种仓库的提交规范应该是有些区别的。
+<!--
 说明：
 
 - `<type>`
@@ -34,3 +36,4 @@
 
 - `add-windows: 如何修改 powershell 命令行提示符`
 - `chore: 规定 commit 规范`
+ -->
