@@ -7,6 +7,12 @@
 
 bat 中执行 ps1 脚本：`powershell -ExecutionPolicy ByPass -File "bat.ps1"`
 
+## 网络
+
+```ps1
+Resolve-DnsName <domain>
+```
+
 ## 文件和文件夹
 
 ```sh
@@ -18,6 +24,9 @@ New-Item -Path '<new_file_url>' -ItemType File
 
 New-Item -Force -Path '<new_file_url>' -ItemType File
 # 强制创建文件，如果文件已存在则会被覆盖
+
+Get-ChildItem -Path . -Recurse -Exclude "node_modules" -File | Where-Object { $_.Name -like "playwright.config*" }
+# 在该目录下查找 playwright.config 开头文件，并忽略 node_modules 文件夹
 ```
 
 ## powershell 命令提示符
