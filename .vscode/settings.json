@@ -1,16 +1,26 @@
 {
-    "cSpell.words": [
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": true,
+    "explorer.fileNesting.patterns": {
+        "README.md": "CODE_OF_CONDUCT.md, CONTRIBUTING.md, LICENSE, SECURITY.md"
+    },
+    "cSpell.ignoreWords": [
         "DISM",
         "hashfile",
         "SCHTASKS",
-        "SIGI"
-    ],
-    "cSpell.customDictionaries": {
-        "custom-dictionary-workspace": {
-            "name": "custom-dictionary-workspace",
-            "path": "${workspaceFolder:Accumulate-CLI}/.cspell/custom-dictionary-workspace.txt",
-            "addWords": true,
-            "scope": "workspace"
-        }
-    }
+        "SIGI",
+        "charmaps",
+        "chcp",
+        "Exif",
+        "exiftool",
+        "ffplay",
+        "ffprobe",
+        "libvorbis",
+        "libx",
+        "loglevel",
+        "noaccurate",
+        "nokey",
+        "noprint",
+        "sseof"
+    ]
 }
