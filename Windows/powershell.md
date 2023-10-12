@@ -11,6 +11,12 @@ bat 中执行 ps1 脚本：`powershell -ExecutionPolicy ByPass -File "bat.ps1"`
 
 ```ps1
 Resolve-DnsName <domain>
+
+Get-NetTCPConnection
+# 查看端口占用情况
+
+Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 80}
+# 只查看 80 端口的占用情况 $_ 变量表示管道传递的对象。
 ```
 
 ## 文件和文件夹
