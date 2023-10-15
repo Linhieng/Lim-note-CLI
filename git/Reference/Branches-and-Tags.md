@@ -164,9 +164,13 @@ $ git tag <tag-name> [<commit>]
 # 给某次提交 <commit> 添加一个标签。
 # 如果没有指定 <commit>, 则默认是 HEAD.
 
-$ git tag (-d | --delete) <tag-name>
-# 删除标签。
-
 $ git push --tags
 # 上传本地所有标签到云端
+
+$ git tag (-d | --delete) <tag-name>
+# 删除本地标签。
+
+$ git push origin :refs/tags/<tag-name>
+# 删除云端上的标签
+
 ```
