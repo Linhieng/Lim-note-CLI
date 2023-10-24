@@ -72,6 +72,8 @@ echo '' 2> <file_url>
 
 - `DiskPart` 进入
 - `list disk` 可查看当前选中的磁盘
+- `list volume` 列出所有卷（一个磁盘可以分为多个卷）
+- `list partition` 显示当前磁盘的分区列表（可查看恢复分区）
 - `attributes disk` 查看相关属性。`attributes` 可简写成 `att`。
     - `attributes disk set readonly` 移动硬盘立马生效，移动磁盘需重新连接。
     - `attributes disk clear readonly` 均立马生效
