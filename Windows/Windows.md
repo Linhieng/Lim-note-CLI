@@ -43,7 +43,7 @@ set winrar="C:\Program Files\WinRAR\WinRAR.exe"
 | `notepad`                                  | 记事本                      |
 | `mspaint`                                  | 画图                        |
 | `magnify`                                  | 放大镜                      |
-| `SnippingTool `                            | 截图工具                    |
+| `SnippingTool`                             | 截图工具                    |
 | `control keymgr.dll`                       | 凭据管理器                  |
 | `control folders`                          | 文件资源管理器选项          |
 | `sysdm.cpl`                                | 系统属性 (可配置环境变量)   |
@@ -51,7 +51,8 @@ set winrar="C:\Program Files\WinRAR\WinRAR.exe"
 | `cleanmgr`                                 | 磁盘清理                    |
 | `taskschd.msc`                             | 任务计划程序                |
 | `WF.msc`                                   | 防火墙 (管理端口的出入规则) |
-| msinfo32                                   | 系统信息。可查看 BIOS 模式   |
+| `msinfo32`                                 | 系统信息。可查看 BIOS 模式   |
+| `comexp.msc`                               | 组件服务                    |
 
 | 不太常用                                             | 说明                                                          |
 |------------------------------------------------------|-------------------------------------------------------------|
