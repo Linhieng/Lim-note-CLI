@@ -343,7 +343,7 @@ function prompt {
 
 参考自 [正则替换字符串](https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_comparison_operators#replacement-operator)
 
-### 风格（荐）：换行 + 彩色 + 判断是否管理员
+### 风格：换行 + 彩色 + 判断是否管理员
 
 参考自 [about_Prompts](https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-7.3) 和 [stack overflow](https://stackoverflow.com/questions/37367460/how-achieve-a-two-line-prompt)
 
@@ -359,6 +359,50 @@ function prompt {
     } else  {
         ([System.Environment]::NewLine) + "$([char]0x1b)[92m" + "$fullpath" + "$([char]0x1b)[91m" + ([System.Environment]::NewLine) + "> "
     }
+}
+```
+
+### 风格：显式当前所在 git 分支
+
+参考 [stack Overflow](https://stackoverflow.com/questions/1287718/how-can-i-display-my-current-git-branch-name-in-my-powershell-prompt)
+
+```ps1
+function Write-BranchName () {
+    try {
+        $branch = git rev-parse --abbrev-ref HEAD
+
+        if ($branch -eq "HEAD") {
+            # we're probably in detached HEAD state, so print the SHA
+            $branch = git rev-parse --short HEAD
+            Write-Host " ($branch)" -ForegroundColor "red"
+        }
+        else {
+            # we're on an actual branch, so print it
+            Write-Host " ($branch)" -ForegroundColor "blue"
+        }
+    } catch {
+        # we'll end up here if we're in a newly initiated git repo
+        Write-Host " (no branches yet)" -ForegroundColor "yellow"
+    }
+}
+
+function prompt {
+    $base = "PS "
+    $path = "$($executionContext.SessionState.Path.CurrentLocation)"
+    $userPrompt = "$('>' * ($nestedPromptLevel + 1)) "
+
+    Write-Host "`n$base" -NoNewline
+
+    if (Test-Path .git) {
+        Write-Host $path -NoNewline -ForegroundColor "green"
+        Write-BranchName
+    }
+    else {
+        # we're not in a repo so don't bother displaying branch name/sha
+        Write-Host $path -ForegroundColor "green"
+    }
+
+    return $userPrompt
 }
 ```
 
