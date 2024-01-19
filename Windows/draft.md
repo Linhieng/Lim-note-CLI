@@ -1,83 +1,4 @@
-<!-- cSpell:word ERRORLEVEL PNPUTIL winrar -->
-<!-- cSpell:ignore mshta vbscript createobject wscript -->
-
-# windows Command Prompt 命令
-
-cmd 中的任何命令，都可以通过 `<command> /?` 或者 `help <command>` 来查看该命令的使用方式。
-
-相关操作符（暂时没有找到官方文档中对这些操作符的具体说明，不过找到一个有关 [&&](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/cmd#remarks) 的说明，）
-
-```sh
-<command1> && <command2>
-# command1 正确时才会执行 command2
-
-<command1> || <command2>
-# command1 出错时才会执行 command2
-
-<command1> & <command2>
-# 两个命令都会执行。
-
-<command1> | <command2>
-# 两个命令都会执行。但只会输出 command1 的标准错误输出。
-```
-
-## 收集的一些命令
-
-command                                                         | 说明
-----------------------------------------------------------------|------------------------------------------------------------------------
-`tree <path> [\F] [\A]`                                         | 输出目录。`\F` 表示包含文件。`\A` 表示使用 ASCII 字符构成 tree
-`CertUtil -hashfile <file_url> [<hash>]`                        | 默认 `SHA1`, 还支持 `MD5`, `SHA256` 等
-`DISM.exe /Online /Export-Driver /Destination:<backup_url>`     | 备份驱动，如 `DISM.exe /Online /Export-Driver /Destination:E:\Drivers`
-`PNPUTIL /add-driver <glob_patterns> /subDirs /install /reboot` | 加载驱动，如 `PNPUTIL /add-driver E:\drivers\*inf" /subDirs /install /reboot`
-
-## `SCHTASKS` 操作 Window 定时任务
-
-常用语法：
-
-```sh
-SCHTASKS /Create /TN <唯一标识-任务名称> /TR <运行命令> /SC <频次> /ST <开始时间?>
-```
-
-指定频次为 `ONCE` 时，必须指定 `/ST` 参数。
-
-## 文件管理
-
-创建文件夹
-
-```sh
-md "<dir_path>"
-# 或者
-mkdir "<dir_path>"
-# 注意，路径中有空格时需要使用双引号括起来，不能使用单引号。
-```
-
-创建文件。暂时没有找到官方提供的命令，所以只能通过重定向写入符号来创建文件，下面是一些案例
-
-```sh
-null > <file_url>
-# 创建原理： null 不是合法命令，所以会输出错误，也就是说标准输出的是空，将空内容写入 <file_url> 文件，就是创建文件了。
-
-type nul > <file_url>
-# 同理，type 命令用于查看文件内容，而 nul 是一个特殊的文件，查看该文件的内容将会输出空，将空内容写入 <file_url> 文件，就是创建文件了。
-
-echo '' 2> <file_url>
-# 同理，由于 echo '' 命令的标准错误输出为空，将空内容写入 <file_url> 文件，就是创建文件了。
-
-# 根据上面原理，你可以写出各种各样的命令。
-```
-
-## `DiskPart` 磁盘管理
-
-使用 `help [command]` 查看帮助
-
-- `DiskPart` 进入
-- `list disk` 可查看当前选中的磁盘
-- `list volume` 列出所有卷（一个磁盘可以分为多个卷）
-- `list partition` 显示当前磁盘的分区列表（可查看恢复分区）
-- `attributes disk` 查看相关属性。`attributes` 可简写成 `att`。
-    - `attributes disk set readonly` 移动硬盘立马生效，移动磁盘需重新连接。
-    - `attributes disk clear readonly` 均立马生效
-- `select disk <ID>`
+# 草稿
 
 ## bat 脚本基本使用
 
@@ -200,3 +121,27 @@ node C:/Users/Public/workspace/test.js
     - `0` 表示隐藏打开的 bat 窗口。 此外还有 `1`（正常窗口），`2`（最小化窗口），`3`（最大化窗口）
     - `(window.close)` 表示关闭打开的 vbscript 脚本窗口。
 - `exit` 表示退出当前 bat
+
+## WinRAR 命令行
+
+Window 中自带的 `compact` 命令可以压缩内容，但并不会生成对应的压缩包（比如 .zip 文件）
+
+想要通过脚本来压缩文件，还是得安装软件，比如 WinRAR。WinRAR 支持命令行，其文档也非常详细。文档所在位置默认为："C:\Program Files\WinRAR\WinRAR.chm"
+
+下面是一个简单的 bat 脚本示例：
+
+```bat
+set winrar="C:\Program Files\WinRAR\WinRAR.exe"
+%winrar% a -ibck -r -x@ignore-zip.txt Backup.zip
+```
+
+说明:
+
+- `a` 是命令，表示添加文件到压缩包
+- `-ibck` 是参数，表示在后台压缩——不会显示窗口
+- `-r` 是参数，表示递归遍历子文件夹
+- `-x@ignore-zip.txt` 是参数，表示忽略 `ignore-zip.txt` 文件中指定的文件。
+- `Backup.zip` 是文件名，最终会生成该压缩文件，没有指定后缀名时默认是 `rar`。注意，该压缩包内原有的压缩文件不会被删除。
+- 最后忽略了一个参数，默认为当前目录。
+
+此外还有 `-n` 和 `-n@` 参数，这两个的作用和 `-x`, `-x@` 相反。
