@@ -118,12 +118,37 @@ $ git merge <branch-name>
 # 如果 br 分支是 main 分支的后代，则 main 直接更新到 br，此时 merge 操作没有新的 commit.
 # 如果这两个分支内容冲突，则需要对这些内容合并，然后提交一个新的 commit，该 commit 包含 main 和 br 两个分支的内容。注意此时 br 还在原来的位置。一般我们还会将 br 也更新到合并后的分支
 
+$ git merge <branch-name> --no-commit
+# 合并没有冲突的两个分支时，默认会自动 commit，添加 --no-commit 可取消该行为。
+
 $ git merge <branch-name> --allow-unrelated-histories
 # 允许合并两个不相关（没有共同祖先）的分支
 
 $ git merge -s ours <branch-name>
 # 与 <branch-name> 分支合并，但不要它的任何修改内容。这种情况下，就是为了给 <branch-name> 分支 留个备份。
+
+$ git merge <branch-name> --no-ff
+# 强制合并处于同一条分支路径上的新分支。默认情况下会直接将该分支移动到新的分支。
 ```
+
+### 合并策略
+
+默认情况下，git 会自动选择合适的策略，但我们也可以手动指定策略：
+
+```sh
+git merge -s <strategy>
+git merge --strategy=<strategy>
+# 可选策略有 octopus ours recursive resolve subtree.
+```
+
+- `ours` 策略
+    - 舍弃另一条分支所作出的变更，只保留当前分支。
+- `recursive` 策略
+    - 最常见、最常用策略，同事也是合并有交叉分支时 git 的默认策略
+    - 算法描述：递归寻找路径最短的唯一共同祖先节点，然后以其为 base 节点进行递归三向合并。
+- FAST-FORWARD MERGE
+    - 快速合并。比如在 c1 分支上执行 `git merge c3` 时，若 c1 分支在 c3 分支之前，则会直接将 c1 分支移动到 c3 分支上，而不是新建一个提交用来合并。
+    - 借助 `--no-ff` 参数可以阻止此行为，这样会强制新建一个提交用于合并（自认为没有意义，仅仅只是因为了解过这个知识点，所以记录一下）。
 
 ## `git rebase`
 
@@ -174,3 +199,25 @@ $ git push origin :refs/tags/<tag-name>
 # 删除云端上的标签
 
 ```
+
+## git cherry-pick
+
+详细可在 [可视化学习 git](https://learngitbranching.js.org) 上操作对应案例。
+
+cherry-pick，精选（某些提交）。该命令用来获得在单个提交中引入的变更，然后尝试将作为一个新的提交引入到你当前分支上。合并变更时，从一个分支上单独挑选一个或两个提交往往比合并整个分支上的所有变更要好得多。
+
+```sh
+$ git cherry-pick <指定的提交>...
+# 尝试将某个提交引入到当前为止（HEAD）。支持同事引入多个提交，有顺序要求。
+
+
+$ git cherry-pick --skip
+# 在 cherry-pick 过程中，跳过本次 commit
+
+$ git cherry-pick --abort
+# 取消本次 cherry-pick 操作
+```
+
+## git show-ref
+
+该命令可查看所有的 `ref`。`ref` 指的是引用（Reference），引用指的其实就是哈希值的别名。每一次提交都会有对应的哈希值，而某些特殊的提交我们会有特殊的名称，比如 HEAD、某某分支、某某标签，都是对某次提交的引用。
