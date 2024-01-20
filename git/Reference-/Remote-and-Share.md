@@ -53,6 +53,9 @@ git push [<options>] [<repository> [<refspec>...]]
 案例：
 
 ```sh
+git push --all origin
+# 将本地所有分支同时推送到云端
+
 $ git push
 # 这是简写模式，如果仓库是新建的，该模式是不生效的，须使用过 -u 才可以使用该简写命令。
 # 这种只适用于本地分支名和远程分支名相同的。如果想将本地 a 分支推送到远程 main 分支，不能使用该简写模式。比如： git push -u origin new:master 生效后，使用 git push 还是会无效。

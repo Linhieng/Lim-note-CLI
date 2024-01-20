@@ -41,18 +41,11 @@ $ git branch <branch-name>
 # 切换分支。
 # 如果该分支不存在，则会创建新分支。
 
-$ git branch (-d | --delete) <branch-name>
-# 在删除本地分支。
-# 若提示 not fully merged，指的是该分支是“分叉”的，如果删除了，那么该分支的数据就消失了。我们可以先合并该分支，然后再删除该分支就没有问题了，或者使用 -D 强制删除，那么我们就会丢失该分支的数据。
 
 $ git branch (-m | --move) [<old-branch>] <new-branch>
 # 修改本地分支名。
 # 修改分支名后，后续提交时直接使用新的分支名，旧的远程分支直接删除。
 
-$ git branch (-u | --set-upstream) <remote-name>/<remote-branch> [<branch-name>]
-# 指定本地的 <branch-name> 分支追踪远程分支 <remote-name>/<remote-branch>.
-# 如果省略 <branch-name>，则 <branch-name> 默认为当前分支名。
-# 追踪远程分支后，本地分支名和远程分支名不同时，可以使用 git pull, 但是不能使用 git push.
 ```
 
 ## `git switch`
@@ -126,61 +119,6 @@ $ git merge <branch-name> --no-ff
 # 强制合并处于同一条分支路径上的新分支。默认情况下会直接将该分支移动到新的分支。
 ```
 
-### 合并策略
-
-默认情况下，git 会自动选择合适的策略，但我们也可以手动指定策略：
-
-```sh
-git merge -s <strategy>
-git merge --strategy=<strategy>
-# 可选策略有 octopus ours recursive resolve subtree.
-```
-
-- `ours` 策略
-    - 舍弃另一条分支所作出的变更，只保留当前分支。
-- `recursive` 策略
-    - 最常见、最常用策略，同事也是合并有交叉分支时 git 的默认策略
-    - 算法描述：递归寻找路径最短的唯一共同祖先节点，然后以其为 base 节点进行递归三向合并。
-- FAST-FORWARD MERGE
-    - 快速合并策略。在该策略下，将两个处于同一条历史提交树的提交合并时，git 不会创建新的提交记录，而是直接移动到最新的提交上。比如有这么一个历史提交树 c1 <—— c2 <—— c3 ，在 c1 上执行 `git merge c3` 或 `git rebase c3` 时，git 会直接将 c1 移动到 c3 上。
-    - `git merge` 的 `--no-ff` 参数可以阻止此行为，即强制新建一个提交用于合并（自认为没有意义，仅仅只是因为了解过这个知识点，所以记录一下）。
-
-## `git rebase`
-
-OK
-
-## `git tag`
-
-在 git 中分支是很容易移动的，所以当我们开发完一个可用的版本后，我们不会使用分支来代表该版本，而是使用标签。
-比如指定某一版本的标签为 v1，那么后面就可以通过该标签很轻松的定位到对应的版本代码。
-标签的命名基本都是版本号，比如 v1.0、v2.0-beta 之类的。
-
-案例：
-
-```sh
-$ git push origin :refs/tags/<tag-name>
-# 删除云端上的标签
-
-```
-
 ## git cherry-pick
 
 详细可在 [可视化学习 git](https://learngitbranching.js.org) 上操作对应案例。
-
-cherry-pick，精选（某些提交）。该命令用来获得在单个提交中引入的变更，然后尝试将作为一个新的提交引入到你当前分支上。合并变更时，从一个分支上单独挑选一个或两个提交往往比合并整个分支上的所有变更要好得多。
-
-```sh
-$ git cherry-pick <指定的提交>...
-# 尝试将某个提交引入到当前为止（HEAD）。支持同事引入多个提交，有顺序要求。
-
-
-$ git cherry-pick --skip
-# 在 cherry-pick 过程中，跳过本次 commit
-
-$ git cherry-pick --abort
-# 取消本次 cherry-pick 操作
-```
-
-## git show-ref
-
-该命令可查看所有的 `ref`。`ref` 指的是引用（Reference），引用指的其实就是哈希值的别名。每一次提交都会有对应的哈希值，而某些特殊的提交我们会有特殊的名称，比如 HEAD、某某分支、某某标签，都是对某次提交的引用。
