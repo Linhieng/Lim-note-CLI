@@ -41,13 +41,6 @@ $ git branch <branch-name>
 # 切换分支。
 # 如果该分支不存在，则会创建新分支。
 
-$ git branch <new-branch> <place>
-# 创建一个新分支。<place> 为新分支位置，它是一个 git 能够识别。
-
-$ git branch (-f | --force) <branch-name> [<start-point>]
-# 强制重置本地分支 <branch-name> 的位置为 <start-point>.
-# 如果未指定 <start-point>，则 <start-point> 代表 HEAD.
-
 $ git branch (-d | --delete) <branch-name>
 # 在删除本地分支。
 # 若提示 not fully merged，指的是该分支是“分叉”的，如果删除了，那么该分支的数据就消失了。我们可以先合并该分支，然后再删除该分支就没有问题了，或者使用 -D 强制删除，那么我们就会丢失该分支的数据。
@@ -73,6 +66,9 @@ $ git switch <branch-name>
 
 $ git switch (-c | --create) <new-branch>
 # 在当前位置创建一个新的分支名并切换到这个新分支。
+
+$ git switch --orphan <new-branch>
+# 创建一个孤立分支并（没有任何历史提交记录），并切换到该分支。
 ```
 
 ## `git checkout`
@@ -99,8 +95,7 @@ $ git checkout -b <new-branch> <remote-name>/<remote-branch>
 # 在当前位置创建一个新分支，并且它追踪一个远程分支 <remote-name>/<remote-branch>, 但是该追踪只支持 pull，并不支持 push.
 
 $ git checkout --orphan <new-branch>
-# 在当前位置创建一个新的孤立分支，并切换到该分支。
-# 该分支特殊之处在于，刚创建时，他没有任何历史提交纪录，所以称为 orphan（孤立）。
+# 创建一个孤立分支并，并切换到该分支。
 ```
 
 ## `git merge`
@@ -147,31 +142,12 @@ git merge --strategy=<strategy>
     - 最常见、最常用策略，同事也是合并有交叉分支时 git 的默认策略
     - 算法描述：递归寻找路径最短的唯一共同祖先节点，然后以其为 base 节点进行递归三向合并。
 - FAST-FORWARD MERGE
-    - 快速合并。比如在 c1 分支上执行 `git merge c3` 时，若 c1 分支在 c3 分支之前，则会直接将 c1 分支移动到 c3 分支上，而不是新建一个提交用来合并。
-    - 借助 `--no-ff` 参数可以阻止此行为，这样会强制新建一个提交用于合并（自认为没有意义，仅仅只是因为了解过这个知识点，所以记录一下）。
+    - 快速合并策略。在该策略下，将两个处于同一条历史提交树的提交合并时，git 不会创建新的提交记录，而是直接移动到最新的提交上。比如有这么一个历史提交树 c1 <—— c2 <—— c3 ，在 c1 上执行 `git merge c3` 或 `git rebase c3` 时，git 会直接将 c1 移动到 c3 上。
+    - `git merge` 的 `--no-ff` 参数可以阻止此行为，即强制新建一个提交用于合并（自认为没有意义，仅仅只是因为了解过这个知识点，所以记录一下）。
 
 ## `git rebase`
 
-`rebase` 和 `merge` 的区别就在于：`merge` 会保留所有提交纪录，但历史纪录乱；`rebase` 会丢失提交纪录（垃圾回收机制），但历史纪录可以是一条直线。
-
-案例：
-
-```sh
-$ git rebase (-i | --interactive) <place>
-# https://git-scm.com/docs/git-rebase#:~:text=Make%20a%20list%20of%20the%20commits%20which%20are%20about%20to%20be%20rebased
-# 可以对某次提交进行相关操作, 比如修改某次提交的 commit message
-
-$ git rebase <branch-name>
-# 设：参数中的 <branch-name> 为 br，当前所在分支为 main.
-# rebase 就是变基，即将 main 的基变成 br 分支。
-# 如果 br 分支是 main 分支的后代，则 rebase 操作和 merge 操作一样，main 分支只是简单的更新到 br.
-# 如果 br 分支 和 main 分支内容冲突，则会将 main 作为 br 的一次新的 commit，此时 main 的前一个历史版本(称为父结点)变成了 br。注意 br 还在原地，一般我们还需要再将 br 变基到 main 上。
-
-$ git rebase <base-branch> <change-branch>
-# 第一个参数，是作为“基”的存在，第二个参数，是作为“变”的存在。
-# 该命令与只有一个参数的 rebase 不同，因为该命令改变的不止一次 commit，
-# 而是从 base-branch 和 change-branch 的共同祖先节点算起，到 change-branch，一并变基到 base-branch。
-```
+OK
 
 ## `git tag`
 
@@ -182,19 +158,6 @@ $ git rebase <base-branch> <change-branch>
 案例：
 
 ```sh
-$ git tag
-# 列出所有标签。
-
-$ git tag <tag-name> [<commit>]
-# 给某次提交 <commit> 添加一个标签。
-# 如果没有指定 <commit>, 则默认是 HEAD.
-
-$ git push --tags
-# 上传本地所有标签到云端
-
-$ git tag (-d | --delete) <tag-name>
-# 删除本地标签。
-
 $ git push origin :refs/tags/<tag-name>
 # 删除云端上的标签
 
