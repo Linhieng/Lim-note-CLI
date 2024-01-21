@@ -64,9 +64,26 @@ $ git commit --allow-empty
 
 ## branch
 
+List, create, or delete branches
+
 ```sh
+$ git branch
+# 列出所有本地分支。
+
+$ git branch -r
+# 列出所有远程分支
+
+$ git branch -a
+# 列出所有分支（本地和远程）
+
+$ git branch -vv
+# 显示分支的 哈希值（SHA1）、提交的注释信息（commit subject line）和对应的上游分支（upstream branch）
+
 $ git branch <new-branch> [<commit> | HEAD]
 # 从 <commit> 上创建一个新分支。
+
+$ git branch (-m | --move) <old-branch> <new-branch>
+# 修改分支名。
 
 $ git branch (-d | --delete) <branch-name>
 # 删除本地分支。
@@ -78,13 +95,16 @@ $ git branch (-f | --force) <branch> [<commit> | HEAD]
 # 强制将 <branch> 移动到 <commit>。
 # 注意，<branch> 不能是当前所在分支。
 
-$ git branch (-u | --set-upstream-to) <upstream> [<branch>]
-# set the <branch> to track <upstream>。若省略 <branch>，则默认为当前分支
+$ git branch <new-branch> (-t | --track | --track=direct) <upstream>
+# 新建一个分支，并让其追踪 <upstream>
+
+$ git branch (-u | --set-upstream-to) <upstream> [<branch> | HEAD]
+# set the <branch> to track <upstream>。
 ```
 
 ## tag
 
-标签就像是一个锚点，它就像某个提交哈希值的别名一样，不会改变其位置。所以标签通常用于记录某个重要的节点，比如某个大版本的发布或者某次重要的合并操作或者修正某个重要的 bug 等。
+标签就像是一个锚点，可以把它当成某个提交哈希值的别名。标签不像分支，它无法改变位置，所以标签通常用于记录某个重要的节点，比如某个大版本的发布或者某次重要的合并操作或者修正某个重要的 bug 等。
 
 ```sh
 $ git tag
@@ -94,7 +114,7 @@ $ git tag <tag-name> [<commit> | HEAD]
 # 给某次提交 <commit> 添加一个标签。
 
 $ git push --tags
-# 上传本地所有标签到云端
+# 将本地所有标签推送到云端
 
 $ git tag (-d | --delete) <tag-name>
 # 删除本地标签。
@@ -112,15 +132,59 @@ $ git describe [<ref> | HEAD]
 
 ## checkout
 
-`checkout <commit>` 简单的理解就是将当前位置移动到指定提交上。但进一步的理解其实是，检出（或者理解为 check out 借出）某个提交，然后在该提交的基础上继续完成一些工作。
+Switch branches or restore working tree files
+
+Updates files in the working tree to match the version in the index or the specified tree. If no pathspec was given, git checkout will also update HEAD to set the specified branch as the current branch.
+
+checkout(check out) 意为检出。简单理解就是将当前位置（HEAD）移动到对应位置上。
+
+checkout 的功能相当强大，从而也显得臃肿和复杂，所以出现了一些新的命令来分担它的相关功能，比如 switch 命令，下面是一些可用 switch 命令替换的功能：
 
 ```sh
+$ git checkout <branch>
+# 切换分支
 
-$ git checkout (-b | -B) <new-branch> <start-point>
-# 新建并切换到新分支 <new-branch>，并让它追踪 <start-point>。可用于追踪远程分支。
+$ git checkout -b <new-branch> [<start-point> | HEAD]
+# 新建分支并切换到该分支。可指定分支的起始位置
+
+$ git checkout -b <new-branch> -t <upstream>
+# 在 <upstream> 处新建分支并切换到该分支，同时将新分支追踪 <upstream>。
+
+$ git checkout --orphan <new-branch>
+# 新建一个空分支，并切换到该分支。
+# 空分支：没有任何历史提交记录，和其他分支也没有任何联系
+```
+
+checkout 还可以切换到指定的某次提交。但这样描述可能让人觉得和“checkout”的含义没太大关系，所以我们换种描述：checkout 可以从历史提交记录中检出某次提交。不仅如此，checkout 还可以只检出某次提交中的某个文件，效果上就像是将某个文件恢复到之前的某个版本一样！
+
+```sh
+$ git checkout <commit>
+# 检出某次提交
+
+$ git checkout <tree-ish> <pathspec>
+# 检出 <tree-ish> (通常是一个提交) 时 <pathspec> 的内容。
+# 上面的命令解释起来太过麻烦，写成这样 git checkout <commit> <file> 来解释比较方便
+# 将 <file> 的内容恢复到 <commit> 版本时的状态。
+
+$ git checkout (-p | --patch) <tree-ish> -- <pathspec>
+# 类似于上一个命令，但 -p 参数能够让我们做一些其他操作，而不是直接恢复成某个版本的状态
 ```
 
 ## switch
+
+```sh
+$ git switch <branch>
+# 切换分支
+
+$ git switch -c <new-branch> [<start-point> | HEAD]
+# 新建分支并切换到该分支。可指定分支的起始位置
+
+$ git switch -c <new-branch> -t <upstream>
+# 在 <upstream> 处新建分支并切换到该分支，同时将新分支追踪 <upstream>。
+
+$ git switch --orphan <new-branch>
+# 新建一个空分支，并切换到该分支
+```
 
 ## 合并策略
 
@@ -141,6 +205,25 @@ git (merge | rebase | cherry-pick) --strategy=<strategy>
     - `git merge` 时添加 `--no-ff` 参数可以阻止此行为，即强制新建一个提交用于合并。
 
 ## merge
+
+Join two or more development histories together
+
+```sh
+$ git merge <commit>
+# 将 <commit> 合并到当前位置（HEAD），并新建一个提交
+
+$ git merge <commit> --no-commit
+# 合并后不自动 commit
+
+$ git merge <commit> --allow-unrelated-histories
+# 允许合并两个不相关（没有共同祖先）的分支
+
+$ git merge -s ours <commit>
+# 与 <commit> 合并，但不接受 <commit> 中的任何内容
+
+$ git merge <branch> --no-ff
+# 不采取快速合并（Fast-Forward）策略
+```
 
 ## rebase
 
@@ -218,14 +301,24 @@ $ git rebase --abort
 
 ## cherry-pick
 
-cherry-pick，精选。该命令用来获得在单个提交中引入的变更，然后尝试将作为一个新的提交引入到你当前分支上。合并变更时，从一个分支上单独挑选一个或两个提交往往比合并整个分支上的所有变更要好得多。
+Apply the changes introduced by some existing commits
+
+Given one or more existing commits, apply the change each one introduces, recording a new commit for each.
+
+cherry-pick 可以挑选若干个提交，然后将其添加在当前位置（HEAD）之后。
 
 ```sh
-$ git cherry-pick <commit>...
-# 将一系列提交按顺序添加到 HEAD 之后。要求 <commit> 不能是 HEAD 的祖先节点
+$ git cherry-pick -n <commit>
+# 应用 <commit> 带来的变更内容，但不创建新的提交
+
+$ git cherry-pick ..main
+# 将不属于 HEAD，但属于 main 的祖先的一系列提交添加到 HEAD 之后
 
 $ git cherry-pick --skip
-# （解决冲突时）跳过本次提交、不选择本次提交
+# 跳过本次提交、不选择本次提交
+
+$ git cherry-pick --continue
+# （解决冲突后）继续 cherry-pick 过程
 
 $ git cherry-pick --abort
 # 取消本次 cherry-pick 操作
@@ -233,27 +326,40 @@ $ git cherry-pick --abort
 
 ## reset
 
-reset 可直接回退到某次提交。支持保留/删除当前位置（HEAD）到所回退的提交之间的所有变更。注意，该命令不同于 revert 和 cherry-pick 等命令，该命令不支持撤回！运行后会丢失回退过程中的所有 commit 注释内容（虽然这些内容相对来说不是特别重要）。
+Reset current HEAD to the specified state
+
+reset 可直接回退到某次提交。支持保留/删除被撤销的提交所作出的变更内容。该命令非常好理解，使用时只需注意一点，该命令不同于 revert 和 cherry-pick 等命令，该命令不支持撤回（没有 `--abort` 参数可供选择）。
 
 ```sh
-$ git reset --soft HEAD^
-# 回退到上一次提交，即撤销本次的提交，同时保留本次提交的变更内容。
+$ git reset (--soft) HEAD^
+# 回退到上一次提交，即撤销本次的提交，同时保留本次提交的变更内容。（默认）
 
 $ git reset --hard HEAD^
 # 回退到上一次提交，即撤销本次的提交，同时删除本次提交的变更内容⚠️
 
-$ git reset
-# 将已存档(staged changes)中的所有变更内容移出，用英文来表示更加简洁—— Unstage All Changes。
+$ git reset (HEAD)
+# Unstage All Changes。
+# 回退到 HEAD 时的状态，其索引（index）也会回退，也就是清空暂存区(git restore --staged *)，
 ```
 
 ## revert
 
-撤销（undo）操作可以使用 `reset` 或 `revert` 命令。 `reset` 所撤销的提交将会消失在历史提交树中，这对于个人项目而言是允许的，但对于团队项目则不然。团队项目中，“撤销”这个动作应该被记录下来，被撤销的提交也应该继续保留，这样别人才知道“哦，这个提交被撤销了”。为此，我们可以使用 `revert` 命令，这也是该命令的目的所在。所以 `revert` 会新建一个提交，只不过该提交所带来的变更恰好是之前的某次提交（效果等同于回退到某次提交）。总的来说，`reset` 命令会直接删除其所撤销的提交记录，而 `reset` 命令则在回退的同时保留其所撤销的提交记录。
+该命令用于撤销某次提交所作出的变更。相当于 cherry-pick 的逆操作——选出要撤销的提交，然后将其移除。
+
+revert 过程中出现冲突，则表示撤销变更的内容后，与当前的内容有冲突。
 
 ```sh
+$ git revert -n main~2 main~3 main~4
+$ git revert -n main~5..main~2
+# 依次撤销 main~2 main~3 main~4 共三个提交所做出的变更
+# 注意顺序问题
+#
+# 每成功撤销一个提交，都会创建一个新的提交来记录本次 revert 操作
+# 通过 -n/--no-commit 可阻止此行为。
 
-$ git revert --skip
-# （解决冲突时）跳过本次提交、不选择本次提交
+$ git revert -n main~5^..main~2
+$ git revert -n main~2 main~3 main~4
+# 由于 .. 运算符是一开一闭结构，我们可以直接在左部添加一个 ^ 来实现左右闭合
 
 $ git revert --abort
 # 取消本次 revert 操作

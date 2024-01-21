@@ -21,6 +21,33 @@ git checkout (-b | -B) <new-branch> <start-point>
 
 ## clone
 
+Clone a repository into a new directory
+
+Clones a repository into a newly created directory, creates remote-tracking branches for each branch in the cloned repository (visible using git branch --remotes), and creates and checks out an initial branch that is forked from the cloned repository’s currently active branch.
+
+```sh
+$ git clone <repository_git-url> [<directory-name>]
+# Clone a repository into a new directory
+# 当克隆一个本次仓库时，第二个参数不能省略。使用案例：git clone D:\tmp\t1 D:\tmp\t2
+
+$ git clone -b <branch-name> <url>
+# 只克隆指定分支。注意分支名要区分大小写
+
+$ git clone -c http.proxy="127.0.0.1:7890" <url>
+# 克隆时显式指定代理
+
+$ git clone --depth <depth> <url>
+# 有时候项目太大，可以进行浅克隆，比如：
+# git clone --depth=1 https://github.com/microsoft/TypeScript.git
+
+$ git clone --shallow-since="1 week" <url>
+# 克隆最近一周的
+# 如果提示 fatal: error processing shallow info: 4，则可能是因为对应日期之后，没有提交内容。
+
+$ git clone --shallow-since="2023-09-06" <url>
+# 克隆 2023-09-06 日之后的
+```
+
 ## fetch
 
 fetch 的核心工作：
