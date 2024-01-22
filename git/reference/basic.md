@@ -97,9 +97,14 @@ $ git branch (-f | --force) <branch> [<commit> | HEAD]
 
 $ git branch <new-branch> (-t | --track | --track=direct) <upstream>
 # 新建一个分支，并让其追踪 <upstream>
+# 注意：git branch -t <new-branch> 的效果是新建一个分支，并将该分支追踪当前位置！
 
 $ git branch (-u | --set-upstream-to) <upstream> [<branch> | HEAD]
 # set the <branch> to track <upstream>。
+
+$ git branch --unset-upstream <branchname>
+# Remove the upstream information for <branchname>.
+# If no branch is specified it defaults to the current branch.
 ```
 
 ## tag
@@ -171,6 +176,8 @@ $ git checkout (-p | --patch) <tree-ish> -- <pathspec>
 ```
 
 ## switch
+
+Switch to a specified branch. The working tree and the index are updated to match the branch. All new commits will be added to the tip of this branch.
 
 ```sh
 $ git switch <branch>
@@ -273,7 +280,7 @@ $ git rebase --edit-todo
 - `reword <commit>`: use commit, but edit the commit message
     - 解释：reword 同样也是选择该提交，但会停下来修改本次 commit 的注释内容。
 - `edit <commit>`: use commit, but stop for amending.
-    - amending 表示做一些补充工作，通常是新建几个提交用于补充说明
+    - amending 表示做一些补充工作，在此期间可以选择创建新的提交来记录，也可以创建，而是直接 continue。
     - 当补充工作完成时，执行 `git rebase --continue` 继续执行下一条命令
     - 如果需要修改后续的命令，执行 `git rebase --edit-todo` 可再次编辑 todo 文件
 - `squash <commit>`: use commit, but meld into previous commit

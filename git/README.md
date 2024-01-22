@@ -50,6 +50,12 @@ $ git -h <command>
     - [status](./reference/examine.md#status)
 - 其他零碎内容
     - [show-ref](./reference/other.md#show-ref)
+    - [shortlog](./reference/other.md#shortlog)
+    - [blame](./reference/other.md#blame)
+    - [reflog](./reference/other.md#reflog)
+    - [whatchanged](./reference/other.md#whatchanged)
+    - [stash](./reference/other.md#stash)
+    - [ls-remote](./reference/other.md#ls-remote)
 
 ## git初始化与配置
 
