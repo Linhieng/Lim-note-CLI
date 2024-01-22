@@ -1,69 +1,167 @@
-# git
+# git 笔记
 
-- [基本操作](Reference/Basic-Snapshotting.md)
-    - [`git add`](Reference/Basic-Snapshotting.md#git-add)
-    - [`git commit`](Reference/Basic-Snapshotting.md#git-commit)
-    - [`git status`](Reference/Basic-Snapshotting.md#git-status)
-    - [`git rm`](Reference/Basic-Snapshotting.md#git-rm)
-    - [`git mv`](Reference/Basic-Snapshotting.md#git-mv)
-- [分支和标签](Reference/Branches-and-Tags.md)
-    - [`git log`](Reference/Branches-and-Tags.md#git-log)
-    - [`git branch`](Reference/Branches-and-Tags.md#git-branch)
-    - [`git switch`](Reference/Branches-and-Tags.md#git-switch)
-    - [`git checkout`](Reference/Branches-and-Tags.md#git-checkout)
-    - [`git merge`](Reference/Branches-and-Tags.md#git-merge)
-    - [`git rebase`](Reference/Branches-and-Tags.md#git-rebase)
-    - [`git tag`](Reference/Branches-and-Tags.md#git-tag)
-- [远程与共享](Reference/Remote-and-Share.md)
-    - [`git remote`](Reference/Remote-and-Share.md#git-remote)
-    - [`git push`](Reference/Remote-and-Share.md#git-push)
-    - [`git fetch`](Reference/Remote-and-Share.md#git-fetch)
-    - [`git pull`](Reference/Remote-and-Share.md#git-pull)
-- [创建和配置](Reference/Create-and-Config.md)
-    - [`git init`](Reference/Create-and-Config.md#git-init)
-    - [`git clone`](Reference/Create-and-Config.md#git-clone)
-    - [`git config`](Reference/Create-and-Config.md#git-config)
-- [撤销和重做](Reference/Undo-and-Reset.md)
-    - [`git reset`](Reference/Undo-and-Reset.md#git-reset)
-    - [`git revert`](Reference/Undo-and-Reset.md#git-revert)
-    - [`git restore`](Reference/Undo-and-Reset.md#git-restore)
-    - [`git checkout`](Reference/Undo-and-Reset.md#git-checkout)
-
-## 配置系统层次
-
-很多命令都有 `--system`, `--global`, `--local`, , 比如:
+## git 常用命令
 
 ```sh
-git config [--system | --global | --local] --edit
+$ git (help | -h)
+# 给出 git 常用命令，并且会给出学习 git 上的相关帮助
+
+$ git -h <command>
+# 调出对应命令的手册页面。
+# 比如 git -h git, git -h status, git -h revert
 ```
 
-三个参数对应了配置系统的三个层次, 从外到内依次是: system --> global --> local
-内部层次的配置优先级比外部的高, 但范围越小。
-不写时, 默认是 `--local`
+命令目录：
 
-## 相对树引用
+- git 的初始化与配置
+    - [init](#init)
+    - [config](#config)
+- git 的基本操作。
+    - 暂存与提交
+        - [add](./reference/basic.md#add)
+        - [mv](./reference/basic.md#mv)
+        - [rm](./reference/basic.md#rm)
+        - [restore](./reference/basic.md#restore)
+        - [commit](./reference/basic.md#commit)
+    - 分支
+        - [branch](./reference/basic.md#branch)
+        - [tag](./reference/basic.md#tag)
+        - [checkout](./reference/basic.md#checkout)
+        - [switch](./reference/basic.md#switch)
+    - [合并](./reference//basic.md#合并策略)
+        - [merge](./reference/basic.md#merge)
+        - [rebase](./reference/basic.md#rebase)
+        - [cherry-pick](./reference/basic.md#cherry-pick)
+    - 撤销
+        - [reset](./reference/basic.md#reset)
+        - [revert](./reference/basic.md#revert)
+- git 管理云端仓库
+    - [clone](./reference/remote.md#clone)
+    - [fetch](./reference/remote.md#fetch)
+    - [pull](./reference/remote.md#pull)
+    - [push](./reference/remote.md#push)
+    - [remote](./reference/remote.md#remote)
+- git 检查历史和状态
+    - [bisect](./reference/examine.md#bisect)
+    - [diff](./reference/examine.md#diff)
+    - [grep](./reference/examine.md#grep)
+    - [log](./reference/examine.md#log)
+    - [show](./reference/examine.md#show)
+    - [status](./reference/examine.md#status)
+- 其他零碎内容
+    - [show-ref](./reference/other.md#show-ref)
+    - [shortlog](./reference/other.md#shortlog)
+    - [blame](./reference/other.md#blame)
+    - [reflog](./reference/other.md#reflog)
+    - [whatchanged](./reference/other.md#whatchanged)
+    - [stash](./reference/other.md#stash)
+    - [ls-remote](./reference/other.md#ls-remote)
 
-git 中可以指定哈希值，来确定指定某一次提交。
-但同时，也可以使用相对位置，来指定某一次提交。
+## git初始化与配置
 
-### `^` 引用
-
-`^` 符号代表父节点位置，它可以带上数字，不带数字时默认是 1。
-比如 `HEAD^` 指的就是当前位置的父节点。
-
-为什么 `^` 后面还需要带数字呢？
-因为父节点不一定只有一个，比如 `merge` 操作就有可能导致一次提交纪录有两个父节点。
-
-### `~` 引用
-
-`~` 符号代表祖先节点，它也可以带上数字，不带数字时默认是 1。
-比如 `HEAD~` 指的就是当前位置的父节点，它和 `HEAD^` 是等效的。
-
-### 搭配使用
-
-`^` 和 `~` 是可以搭配使用的。比如：
+### init
 
 ```sh
-$ git branch bugWork main^^2~
-# 来自 https://learngitbranching.js.org/ 中的 “高级话题” —— “2：两个父节点”。
+$ git init
+# 将当前目录初始化为一个 Git 仓库。
+
+$ git init <directory>
+# 创建一个新的文件夹，并将其初始化为一个 Git 仓库。
 ```
+
+### config
+
+Get and set repository or global options. You can query/set/replace/unset options with this command. The name is actually the section and the key separated by a dot, and the value will be escaped.
+
+语法如下：
+
+```sh
+git config <options?> <name?> <value?>
+```
+
+配置文件有四类，优先级按以下顺序依次递增：
+
+- `--system`
+    - 全系统的配置文件。目录为 $(prefix)/etc/gitconfig
+- `--global`
+    - 用户特定的配置文件/全局配置文件。目录通常是 ~/.gitconfig
+- `--local`
+    - 仓库特定的配置文件。目录为 .git/config
+- `--worktree`
+    - 可选。需开启 extensions.worktreeConfig 配置才生效。目录为 .git/config.worktree
+
+```sh
+$ git config -l
+# 按配置文件优先级从低到高，列出所有配置项。如果指向查看指定某个配置文件，请添加对应参数。
+
+$ git config -l --show-origin
+# 显示每个配置项的“来源类型 + 实际来源”。
+# 实际来源通常指的是对应的配置文件路径
+
+$ git config <name>
+# 按配置文件优先级，查找某一配置项的值
+
+$ git config <name> <value>
+# 按配置文件优先级，修改/新增某个配置项的值
+
+$ git config --unset <name>
+# 按配置文件优先级，删除某个配置项的值
+
+$ git config --edit
+# 按配置文件优先级，直接编辑最近的配置文件，通常是 .git/config 文件。
+
+$ git config --global http.proxy http://127.0.0.1:7890
+# 只在全局配置文件上新增/修改 http.proxy 配置项
+
+$ git config --global --unset http.proxy
+# 只在全局配置文件上删除 http.proxy 配置项
+
+$ git config --global core.editor 'code'
+# 使用 vscode 编辑配置文件，而不是 vim。（记得先将 vscode 添加至 path）
+```
+
+## 概念
+
+### revisions
+
+git 命令中最常用的参数（没有之一）就是和 revisions 有关。详见 [`git -h revisions`](https://git-scm.com/docs/gitrevisions)
+
+#### 有关提交 commit 那些事
+
+当我使用中文“提交”的时候，含义是一个名词，表示某次提交；当我使用英文 commit 的时候，表示的是动词，表示的是 git commit 这个动作。一段哈希值、一个分支名、一个标签名、特殊标识符号 HEAD（表示当前位置）等都可用于表示某个特定的提交。通常都会使用 C1 <—— C2 <—— C3 等等来表示某段提交，注意箭头指向的是父节点（旧 <—— 新）。
+
+在操作分支之前，了解一些 HEAD 的概念是非常有帮助的。HEAD 是一个特殊的表示，表示当前位置。他可以指向某段哈希值/标签，或者引用某个分支。可以通过 `cat .git/HEAD` 查看具体的 HEAD 值，或者通过 `git symbolic-ref HEAD` 查看对应的引用（如果有的话）
+
+`reset`, `revert` 需要接收某个提交作为参数，表示回到该提交，其含义是回到该提交所作出的变更并未 commit 的时候。比如 `git revert C2` 表示回到 C2，此时 C1 已经 commit，但 C2 所作出的变更还在等待 commit，此时如果有冲突需要先处理冲突才可以 commit。而 `checkout` 命令也需要接收一个提交作为参数，但它的含义是回到该提交已 commit 的时候，比如 `git checkout C2`，此时 C2 已经 commit，没有任何需要 commit 的变更内容。
+
+#### 引用（refs）
+
+git 中每次提交的本质是哈希值，但哈希值不方便，于是有了引用。分支、标签、HEAD 其实都是属于一种引用。很多命令都需要我们提供一个 `<commit>` 参数，这个参数表示的其实就是哈希值或引用，通过 `git show-ref` 可查看所有引用。
+
+此外还有相对引用，主要有下面两种：
+
+- `~<num>` 符号表示向上移动 `<num>` 个提交记录。
+    - 如果不指定 `<num>`，则向上移动一个提交记录
+- `^` 符号表示向上移动一个提交记录。
+    - 该符号后面也可以跟随数字，当只有当一个提交的有多个提交记录时才有意义。
+    - 比如合并后的提交记录就有两个父提交。此时 `^` 指的是直接父提交，`^2` 指的就是被合并的父提交
+- `^` 和 `~` 均可以使用多次，且可以连用，
+
+#### HEAD 的作用
+
+根据前面的只是，我们知道同一个提交，可能有不同的表达方式：哈希值、分支、标签、引用、HEAD等。而我们所能操作的，其实只是 HEAD。
+
+HEAD 的含义永远都是当前位置，当我们对分支进行任意操作时，本质上都是通过 HEAD 来执行的：
+
+- 当我们 checkout/switch 某个分支上时，其实是将 HEAD 该分支绑定。此时，当我们移动 HEAD 时，其对应的分支也会移动。
+- 但当我们 checkout 标签（或哈希值或远程分支）时，HEAD 并不会与其绑定，而是进入分离 HEAD 状态（detached HEAD mode），所以此时我们移动 HEAD 时，标签是不会跟着移动的。
+
+### 冲突
+
+执行 `merge`, `revert`, `cherry-pick`, `rebase` 等命令时都可能会出现需要手动处理冲突的情况。为方便下面的描述，将执行命令时所在位置称为 head 提交，将出现冲突时所在提交位置称为 target 提交（被合并的提交）。在 vscode 中解决冲突时，Accept Current Change 表示只保留 head 提交中的内容，Accept Incoming Change 表示只保留 target 提交的内容）。
+
+执行 `git status` 可以查看有冲突的文件（在 Unmerged paths 下）。
+
+- 在解决完冲突文件后，通过 `git add <pathspec>`，标记冲突已被解决，并将所做的更改添加到暂存区。
+- 如果解决冲突后，只想将其标记冲突已解决，但并不想将更改添加到暂存区，则使用 `git restore --staged <file>` 命令。
+- 如果想直接删除冲突文件，可以执行 `git rm <pathspec>` 命令，它能删除文件，同时标记冲突已被解决，并将所做的更改添加到暂存区。
