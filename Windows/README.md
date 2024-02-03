@@ -1,19 +1,17 @@
 # Window
 
-在微软商城安装安装 [Window 终端管理工具](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)，相关配置可查看[官方文档](https://learn.microsoft.com/zh-cn/windows/terminal/install)
+推荐配置：
+
+- [安装 Window 终端管理工具](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)，[点击进入官方文档查看相关配置](https://learn.microsoft.com/zh-cn/windows/terminal/install)
+- [安装 winget](https://apps.microsoft.com/detail/9NBLGGH4NNS1)
+- [安装 powershell 7](https://github.com/PowerShell/PowerShell?tab=readme-ov-file#get-powershell)。（不推荐 cmd 和 powershell 5）
 
 ## 命令
 
-如无特别说明，每行命令都是独立的。
-
-在开始命令之前，先简单认识一些多命令连接符。部分内容参考自 [cmd 注解](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/cmd#remarks)
-
 ```sh
-<cmd1> & <cmd2>
-# & 符号连接的两个命令相互独立运行，互不影响。
-
 <cmd1> && <cmd2>
 # && 符号要求前一个命令正常运行时，才会运行第二个命令
+
 <cmd1> || <cmd2>
 # || 符号则相反，需要前一个命令运行失败才会运行第二个命令
 
@@ -22,17 +20,22 @@
 # 若第一个命令运行失败，则第二个命令也不会运行，最终只会输出第一个命令的标准错误输出。
 
 
-# 上面命令是用在 cmd 中的
-
+# ------
 <ps1> ; <ps2>
-# 在 powershell 中，想要运行两个相互独立的命令，需要使用命令分隔符 ; （分号）
+# 仅适用 ps。运行两个相互独立的命令
+<cmd1> & <cmd2>
+# 仅适用 cmd。运行两个相互独立的命令
 ```
 
 ```sh
-Get-Help <command> -online
-<command> /?
 help <command>
-# 获取帮助
+# ps 和 cmd 通用。推荐 :)
+
+Get-Help <command> -online
+# 获取在线帮助
+
+<cmd> /?
+# 用于 cmd 中获取帮助
 
 powershell -ExecutionPolicy ByPass -File "bat.ps1"
 # bat 中执行 ps1 脚本
@@ -91,7 +94,7 @@ Get-Variable
 $PSVersionTable
 $host.version
 Get-Host
-# 查看 powershell 版本
+# 可查看 powershell 版本
 ```
 
 ### 网络
