@@ -87,6 +87,11 @@ $ENV:<key> = "<value>"
 gv
 Get-Variable
 # 查看当前 powershell 的变量
+
+$PSVersionTable
+$host.version
+Get-Host
+# 查看 powershell 版本
 ```
 
 ### 网络
