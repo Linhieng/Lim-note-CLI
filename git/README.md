@@ -70,7 +70,7 @@ $ git init <directory>
 
 $ git init --bare [<directory> | .]
 # 初始化为 bare repo(裸仓库)。
-# bare repo 通常用于云端仓库，它不包含 working tree 和 index。
+# bare repo 通常用于云端仓库，它不包含 work tree 和 index。
 ```
 
 ### config
