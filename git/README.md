@@ -67,6 +67,10 @@ $ git init
 
 $ git init <directory>
 # 创建一个新的文件夹，并将其初始化为一个 Git 仓库。
+
+$ git init --bare [<directory> | .]
+# 初始化为 bare repo(裸仓库)。
+# bare repo 通常用于云端仓库，它不包含 working tree 和 index。
 ```
 
 ### config
