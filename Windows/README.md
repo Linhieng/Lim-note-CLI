@@ -50,6 +50,8 @@ echo (off | on)
 # 显示/隐藏命令行提示符前的路径
 
 explorer [<path>]
+explorer %AppData% # cmd 打开 %AppData%\Roaming
+explorer AppData # pwsh 打开 %AppData% 目录
 # 资源管理器，不添加 path 时等同于 win + E
 
 findstr /?
