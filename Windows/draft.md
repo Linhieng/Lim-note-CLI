@@ -1,5 +1,12 @@
 # 草稿
 
+```sh
+
+New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
+# 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
+# 注意创建的是符号链接，而不是 win 中的快捷方式
+```
+
 ## bat 脚本基本使用
 
 ### 变量
