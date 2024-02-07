@@ -11,4 +11,10 @@ npm link <package>
 
 npm unlink <package> -g
 # 卸载某个模块
+
+npm root
+# Print the effective node_modules folder to standard out.
+
+npm root -g
+# 获取全局 node_modules 目录
 ```
