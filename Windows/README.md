@@ -52,6 +52,7 @@ echo (off | on)
 explorer [<path>]
 explorer %AppData% # cmd 打开 %AppData%\Roaming
 explorer AppData # pwsh 打开 %AppData% 目录
+explorer $(npm root -g) # pwsh
 # 资源管理器，不添加 path 时等同于 win + E
 
 findstr /?
