@@ -1,5 +1,7 @@
 # 草稿
 
+[node 加载模块逻辑](https://nodejs.org/api/modules.html#loading-from-node_modules-folders)
+
 ## 命令行
 
 ```sh
