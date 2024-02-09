@@ -5,7 +5,13 @@
 New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
 # 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
 # 注意创建的是符号链接，而不是 win 中的快捷方式
+
+Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
+# pwsh 中不支持 >: The '<' operator is reserved for future use.
+# 可以使用 Get-Content 代替。
 ```
+
+---
 
 ## bat 脚本基本使用
 
