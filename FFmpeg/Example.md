@@ -147,6 +147,66 @@ ffmpeg -i input.mp4 -vf "subtitles=eng.srt" -c:v libx264 -c:a copy output_with_e
 
 ⚠️还没试过。先放在这里，以后要用到时容易找。
 
+## 提取视频中的帧（图片）
+
+```sh
+ffmpeg -i input.mp4 frames/%3d.png
+#    frames/%3d.png
+#        指定输出位置，需要自己创建　frames　文件夹
+#    %3d
+#        表示生成连续的编号 001 002 ……
+#    默认会将整个视频的帧提取出来。
+
+ffmpeg -i input.mp4 -vf fps=1 frames/%3d.png
+#    -vf fps=1
+#        -vf 表示 video filter ，视频过滤
+#    fps=1
+#        每秒取 1 帧。 可以自己修改数值：
+#        fps=10
+#            每秒 10 帧
+#        fps=1/60
+#            每分钟 1 帧
+
+ffmpeg -i input.mp4 -vf select='between(n,1,10)' frames/%3d.png
+#    -vf select='between(n,1,10)'
+#        select 用于指定选取范围。注意：引号不能省略，引号中的内容不能用空格。
+#    between(n,1,10)
+#       n 表示帧; 1,10 表示选取的帧范围。
+#       可以通过 + 号拼接多个范围内的帧：
+#            'between(n,0,4)+between(n,20,24)'
+
+ffmpeg -i input.mp4 -vf select='between(t,0,1)' frames/%3d.png
+#    between(t,0,1)
+#        t 表示秒，0,1 表示选取的时间范围。（动画通常是每秒 24 帧）
+#        注意单位只能是秒，无法使用 HH:MM:SS 这种格式。
+#        不过，可以这样修改单位：
+#        between(t*1000, 60000, 70000)
+#            毫秒。表示选择视频时间从 60000 毫秒到 70000 毫秒之间的帧。
+#        between(t/60, 1, 1.5)
+#            分钟。表示选择视频时间从 1 分钟到 1.5 分钟之间的帧。
+
+ffmpeg  -i input.mp4 -vf select='between(n,20,24)' -fps_mode drop frames/%3d.png
+#    -fps_mode drop
+#        设置匹配视频流的帧率模式。这个能够解决重复帧的问题。
+#        除了 drop，还可以是以下值
+#            -fps_mode vfr
+#            -fps_mode 2
+#        这个选项是用来替代旧版本中的 -vsync 0 配置。
+#            -vsync 0
+#                用于输出帧的选项。-vsync 控制同步操作
+#                0 表示使用无同步模式。
+#                这意味着输出的帧不会根据输入的时间戳进行重新排序，而是按照它们在源文件中出现的顺序进行提取。
+
+ffmpeg -i input.mp4 -s 480x360 frames/%3d.png
+#    -s 480x360
+#        指定输出分辨率。 高度和宽度必须是合法值
+
+ffmpeg -i input.mp4 -vf "scale=480:-1" frames/%3d.png
+#    -vf "scale=480:-1"
+#        -1 表示（高度）自适应利用。
+
+```
+
 ## “兔子洞”
 
 **还是不要想着使用 GPU 加速了。难搞。**
