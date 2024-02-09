@@ -4,23 +4,28 @@
     "explorer.fileNesting.patterns": {
         "README.md": "CODE_OF_CONDUCT.md, CONTRIBUTING.md, LICENSE, SECURITY.md"
     },
-    "cSpell.ignoreWords": [
-        "DISM",
-        "hashfile",
-        "SCHTASKS",
-        "SIGI",
-        "charmaps",
+    "cSpell.words": [
+        "-uroot",
+        "balenaEtcher-portable",
         "chcp",
-        "Exif",
-        "exiftool",
+        "DISM",
         "ffplay",
         "ffprobe",
-        "libvorbis",
-        "libx",
-        "loglevel",
+        "libx264",
+        "magick",
+        "netsh",
+        "nmcli",
         "noaccurate",
         "nokey",
         "noprint",
-        "sseof"
-    ]
+        "nslookup",
+        "PNPUTIL",
+        "pwsh",
+        "SIGI",
+        "sseof",
+        "tracert",
+        "udev",
+        "vsync",
+        "whereis"
+    ],
 }

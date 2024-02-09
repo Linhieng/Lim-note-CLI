@@ -29,6 +29,6 @@ npm root -g
 npm link
 # 将当前目录下的模块作为作为全局模块。案例：https://github.com/nodejs/examples/blob/main/cli/commander/fake-names-generator/README.md
 
-npm unlink <pack-anme> -g
+npm unlink <package-name> -g
 # 卸载
 ```

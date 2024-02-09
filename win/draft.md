@@ -1,3 +1,4 @@
+<!-- cSpell:ignore mshta vbscript wscript ibck -->
 # 草稿
 
 ```sh

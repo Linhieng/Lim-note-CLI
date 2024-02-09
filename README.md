@@ -1,31 +1,15 @@
-# 收集的命令行
+# 个人笔记仓库之 CLI 系列
 
-是选 merge, 还是 rebase 呢?
+文件夹介绍：
 
-## 仓库根目录下的文件和文件夹说明
+-   [git](https://git-scm.com/): 分布式版本管理工具
+-   win: window 相关（cmd,pwsh,pwsh7）
+-   shell: 非 window 相关（linux）
+-   [node](https://docs.npmjs.com/): 与 nodejs 相关(npm, package.json)
+-   [FFmpeg](https://ffmpeg.org): 处理视频音频等多媒体文件
+-   [ImageMagick](https://imagemagick.org/): 处理图片
+-   [ExifTool](https://exiftool.org): 处理图片元信息
 
-```text
-|   .gitignore              执行哪些文件会被 git 忽略掉。
-|   CODE_OF_CONDUCT.md      社区行为准则。
-|   CONTRIBUTING.md         贡献指南。比如当你发现漏洞时，应该发送邮件说明而不是提 issue。
-|   LICENSE                 开源协议。
-|   README.md               对仓库的基本介绍。
-|   SECURITY.md             仓库中的代码安全问题。
-|
-+---.cspell     这是我的 vscode 中 cspell 插件的配置文件夹
-|
-+---.github     这是有关 Github 的配置文件夹，比如我的 issue 模版就在其中，此外还可以提供 workflows 等内容。
-|
-+---.vscode     这是我的 vscode 配置文件夹
-|
-+---FFmpeg      有关 FFmpeg 的笔记
-|
-+---Windows     有关 Windows 下的相关命令，如 cmd, powershell
-|
-+---git         有关 git 命令的笔记（较为久远）
-|
-+---linux       有关 linux 上的相关命令（较为久远）
-|
-+---node_cli    有关 npm 的相关命令（较为久远）
-|
-```
+---
+
+merge, rebase 和 cherry-pick 如何选择，是个让人纠结的问题。但现在，这个问题在这个仓库中有了明确的答案：使用 cherry-pick
