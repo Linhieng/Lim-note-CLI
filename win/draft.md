@@ -1,6 +1,10 @@
 <!-- cSpell:ignore mshta vbscript wscript ibck -->
 # 草稿
 
+TODO:
+
+-   提取 cmd 中的专属命令，并寻找对应的替代命令
+
 ```sh
 
 New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
@@ -10,6 +14,11 @@ New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules
 Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
 # pwsh 中不支持 >: The '<' operator is reserved for future use.
 # 可以使用 Get-Content 代替。
+
+Get-Command
+# 获取所有可运行命令。替代 where。案例：
+(Get-Command cmd).Path
+(Get-Command cmd).Source
 
 
 ls env:
