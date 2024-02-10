@@ -10,7 +10,44 @@ New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules
 Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
 # pwsh 中不支持 >: The '<' operator is reserved for future use.
 # 可以使用 Get-Content 代替。
+
+
+ls env:
+# 获取 $env 所有值
+
+# pwsh 中使用路径变量
+explorer $env:LOCALAPPDATA
 ```
+
+一些我觉得有用的变量
+
+| env                     | path                                   |
+|-------------------------|----------------------------------------|
+| SystemDrive             | C:                                     |
+| HOMEDRIVE               | C:                                     |
+| SystemRoot              | C:\Windows                             |
+| windir                  | C:\Windows                             |
+|                         |                                        |
+| PUBLIC                  | C:\Users\Public                        |
+| USERPROFILE             | C:\Users\{username}                    |
+| APPDATA                 | C:\Users\{username}\AppData\Roaming    |
+| LOCALAPPDATA            | C:\Users\{username}\AppData\Local      |
+| TEMP                    | C:\Users\{username}\AppData\Local\Temp |
+| TMP                     | C:\Users\{username}\AppData\Local\Temp |
+|                         |                                        |
+| ProgramData             | C:\ProgramData                         |
+| ALLUSERSPROFILE         | C:\ProgramData                         |
+| ProgramFiles            | C:\Program Files                       |
+| ProgramFiles(x86)       | C:\Program Files (x86)                 |
+| CommonProgramFiles      | C:\Program Files\Common Files          |
+| CommonProgramFiles(x86) | C:\Program Files (x86)\Common Files    |
+|                         |                                        |
+| COMPUTERNAME            | DESKTOP-???                            |
+| HOMEPATH                | \Users\{username}                      |
+| LOGONSERVER             | \\DESKTOP-???                          |
+| PROCESSOR_ARCHITECTURE  | AMD64                                  |
+| USERDOMAIN              | DESKTOP-???                            |
+| USERNAME                | {username}                             |
 
 ---
 
