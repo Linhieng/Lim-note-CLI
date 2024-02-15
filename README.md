@@ -11,5 +11,3 @@
 -   [ExifTool](https://exiftool.org): 处理图片元信息
 
 ---
-
-merge, rebase 和 cherry-pick 如何选择，是个让人纠结的问题。但现在，这个问题在这个仓库中有了明确的答案：使用 cherry-pick
