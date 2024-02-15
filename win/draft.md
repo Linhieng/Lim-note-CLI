@@ -7,6 +7,15 @@ TODO:
 
 ```sh
 
+ls | ForEach-Object { echo $_ }
+# ForEach-Object { } 是 PowerShell 中的一个 cmdlet，用于迭代集合中的每个对象
+# $_ 代表当前迭代的对象
+
+[Environment]::SetEnvironmentVariable("NODE_HOME", $(npm root -g), "User")
+# 添加用户环境变量
+# [Environment]::SetEnvironmentVariable()：是一个 .NET Framework 中 System.Environment 类的静态方法，用于设置环境变量。
+
+
 New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
 # 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
 # 注意创建的是符号链接，而不是 win 中的快捷方式
