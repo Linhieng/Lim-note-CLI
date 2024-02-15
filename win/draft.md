@@ -7,6 +7,11 @@ TODO:
 
 ```sh
 
+net user administrator /active:yes
+# 激活 Administrator 账户
+net user administrator /active:no
+# 关闭 Administrator 账户
+
 ls | ForEach-Object { echo $_ }
 # ForEach-Object { } 是 PowerShell 中的一个 cmdlet，用于迭代集合中的每个对象
 # $_ 代表当前迭代的对象
