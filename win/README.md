@@ -418,6 +418,114 @@ function prompt {
 }
 ```
 
+### 风格：管理员+git分支+标签+子目录+空提交
+
+```ps1
+function parseGitPosition {
+    <#
+    可能的返回值：
+        空
+
+        (main) sub, not commit yet
+        (main) not commit yet
+
+        (main)
+        (main) sub, tag: v1
+        (main) tag: v1
+        (a1s2d3f4)
+        (a1s2d3f4) sub, tag: v1
+        (a1s2d3f4) tag: v1
+     #>
+
+    # 空（非 git 仓库）
+    if (!(git rev-parse --is-inside-work-tree)) {
+        Write-Host ""
+        return
+    }
+
+    $sub = ""
+
+    # 非 git 根目录
+    if (!(Test-Path .git)) {
+        $sub = "sub"
+    }
+
+    # 无提交记录
+    if (!(git log)) {
+
+        $defaultBranch = git symbolic-ref --short HEAD
+        Write-Host " (" -NoNewline
+        Write-Host "$defaultBranch" -ForegroundColor "yellow" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "") {
+            Write-Host " ${sub}," -NoNewline
+        }
+        Write-Host " not commit yet"
+
+        return
+    }
+
+    $tag = git describe --tags --exact-match HEAD
+    if ($?) {
+        # HEAD 在某一标签上
+        $tag = "tag: $tag"
+    }
+
+
+    $branch = git symbolic-ref --short HEAD
+    if ($?) {
+
+        # normal
+        Write-Host " (" -NoNewline
+        Write-Host "$branch" -ForegroundColor "blue" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "" -And $tag -ne $null) {
+            Write-Host " ${sub}, ${tag}"
+        } else {
+            Write-Host " ${sub}${tag}"
+        }
+
+    } else {
+
+        # detached HEAD status
+        $hash = git rev-parse --short HEAD
+        Write-Host " (" -NoNewline
+        Write-Host "$hash" -ForegroundColor "red" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "" -And $tag -ne $null) {
+            Write-Host " ${sub}, ${tag}"
+        } else {
+            Write-Host " ${sub}${tag}"
+        }
+    }
+
+}
+
+function hasAdminPower {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+    $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+    return $principal.IsInRole($adminRole)
+}
+
+function prompt {
+    $base = "PS$($Host.version.Major) "
+    $path = "$($executionContext.SessionState.Path.CurrentLocation)"
+    $prompt = "$('$' * ($nestedPromptLevel + 1)) " # 嵌套级别，比如输入一个 { 回车，就会变成 >>
+
+    if (hasAdminPower) {
+        $prompt = "$('#' * ($nestedPromptLevel + 1)) "
+    }
+
+    Write-Host "`n$base" -NoNewline
+    Write-Host $path -NoNewline -ForegroundColor "green"
+    parseGitPosition
+
+    return $prompt
+}
+
+```
+
 ### [oh my posh](https://ohmyposh.dev/) 命令行提示符主题
 
 基本步骤如下：
