@@ -80,7 +80,7 @@ my_bash_prompt() {
         fi
     }
 
-    uname_hostname="\[\e[30;47m\] \u@\h "
+    uname_hostname="\[\e[1;30;47m\] \u\[\e[31m\]@\[\e[30m\]\h "
     full_path="\[\e[37;44m\] \w "
     branch_color="\[\e[37;45m\]"
     ln="\[\e[0m\]\n"
