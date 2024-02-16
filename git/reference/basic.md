@@ -312,7 +312,9 @@ Apply the changes introduced by some existing commits
 
 Given one or more existing commits, apply the change each one introduces, recording a new commit for each.
 
-cherry-pick 可以挑选若干个提交，然后将其添加在当前位置（HEAD）之后。
+cherry-pick 只挑选指定提交所带来的变更，然后将其添加在当前位置（HEAD）之后。
+
+注意是**指定提交所带来的变更**，并不包含指定提交前的变更总和！
 
 ```sh
 $ git cherry-pick -n <commit>
