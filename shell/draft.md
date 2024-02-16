@@ -3,6 +3,11 @@
 
 
 ```sh
+ssh -i /path/to/private_key user@hostname
+# -i 参数指定主机私钥
+
+#---------------------------------------
+
 ssh-keygen -t ECDSA
 # 在本机生成 ECDSA 密钥（公钥和私钥）。
 # 私钥通常存储在 ~/.ssh/id_ecdsa
