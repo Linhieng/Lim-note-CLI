@@ -4,7 +4,9 @@
 
 ```sh
 ssh -i /path/to/private_key user@hostname
-# -i 参数指定主机私钥
+# -i 参数 (IdentityFile) 指定本机私钥，以便远程主机验证本机的身份。
+ssh-keygen -t ed25519 -f "$HOME\.ssh\id_ed25519-remote-ssh"
+#-f 参数用于指定生成的密钥文件的名称（文件路径）
 
 #---------------------------------------
 
