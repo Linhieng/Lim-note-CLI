@@ -418,6 +418,114 @@ function prompt {
 }
 ```
 
+### 风格：管理员+git分支+标签+子目录+空提交
+
+```ps1
+function parseGitPosition {
+    <#
+    可能的返回值：
+        空
+
+        (main) sub, not commit yet
+        (main) not commit yet
+
+        (main)
+        (main) sub, tag: v1
+        (main) tag: v1
+        (a1s2d3f4)
+        (a1s2d3f4) sub, tag: v1
+        (a1s2d3f4) tag: v1
+     #>
+
+    # 空（非 git 仓库）
+    if (!(git rev-parse --is-inside-work-tree)) {
+        Write-Host ""
+        return
+    }
+
+    $sub = ""
+
+    # 非 git 根目录
+    if (!(Test-Path .git)) {
+        $sub = "sub"
+    }
+
+    # 无提交记录
+    if (!(git log)) {
+
+        $defaultBranch = git symbolic-ref --short HEAD
+        Write-Host " (" -NoNewline
+        Write-Host "$defaultBranch" -ForegroundColor "yellow" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "") {
+            Write-Host " ${sub}," -NoNewline
+        }
+        Write-Host " not commit yet"
+
+        return
+    }
+
+    $tag = git describe --tags --exact-match HEAD
+    if ($?) {
+        # HEAD 在某一标签上
+        $tag = "tag: $tag"
+    }
+
+
+    $branch = git symbolic-ref --short HEAD
+    if ($?) {
+
+        # normal
+        Write-Host " (" -NoNewline
+        Write-Host "$branch" -ForegroundColor "blue" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "" -And $tag -ne $null) {
+            Write-Host " ${sub}, ${tag}"
+        } else {
+            Write-Host " ${sub}${tag}"
+        }
+
+    } else {
+
+        # detached HEAD status
+        $hash = git rev-parse --short HEAD
+        Write-Host " (" -NoNewline
+        Write-Host "$hash" -ForegroundColor "red" -NoNewline
+        Write-Host ")" -NoNewline
+        if ($sub -ne "" -And $tag -ne $null) {
+            Write-Host " ${sub}, ${tag}"
+        } else {
+            Write-Host " ${sub}${tag}"
+        }
+    }
+
+}
+
+function hasAdminPower {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+    $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+    return $principal.IsInRole($adminRole)
+}
+
+function prompt {
+    $base = "PS$($Host.version.Major) "
+    $path = "$($executionContext.SessionState.Path.CurrentLocation)"
+    $prompt = "$('$' * ($nestedPromptLevel + 1)) " # 嵌套级别，比如输入一个 { 回车，就会变成 >>
+
+    if (hasAdminPower) {
+        $prompt = "$('#' * ($nestedPromptLevel + 1)) "
+    }
+
+    Write-Host "`n$base" -NoNewline
+    Write-Host $path -NoNewline -ForegroundColor "green"
+    parseGitPosition
+
+    return $prompt
+}
+
+```
+
 ### [oh my posh](https://ohmyposh.dev/) 命令行提示符主题
 
 基本步骤如下：
@@ -425,11 +533,13 @@ function prompt {
 1. 安装 [Window terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
 1. 安装 [`winget`](https://apps.microsoft.com/detail/9NBLGGH4NNS1) 工具
 1. 执行 `winget install JanDeDobbeleer.OhMyPosh -s winget` 然后重启终端
-1. 管理员权限下安装字体 `oh-my-posh font install`
+1. 管理员权限下安装字体 `oh-my-posh font install`，不想通过管理员安装，则运行 `oh-my-posh font install --user`
 1. 在 Window terminal 中修改字体为刚刚安装的字体
-1. 查看所有可用主题 `Get-PoshThemes` 。如果没有出现图标，那就是字体没有设置好，请重新设置字体或者重启终端。注意在 vscode 中主要在 settings 中设置字体，配置项为 `"terminal.integrated.fontFamily": "Hack Nerd Font"`
-1. 执行命令（注意替换 `<theme-name>`） `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\<theme-name>.omp.json"`，此时会输出一行字符串，执行该字符串就可以应用主题。以主题 `rudolfs-dark` 为例，执行 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json"`，然后再执行输出的字符串。或者直接 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json" | Invoke-Expression` 。
-1. 通过命令 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json" > $profile` 将对应命令添加到 `$profile` 就可以实现每次启动 powershell 都自动执行该命令了。
+1. 通过 `echo "oh-my-posh init pwsh | Invoke-Expression" > $Profile` 命令启用 oh my posh
+1. 查看所有可用主题 `Get-PoshThemes` 。如果没有出现图标/显示方块，那就是字体没有设置好，请重新设置字体然后重启终端。注意在 vscode 中主要在 settings 中设置字体，配置项为 `"terminal.integrated.fontFamily": "Hack Nerd Font"`，这样可以不覆盖编辑器中的字体。
+1. 执行命令（自行替换 `<theme-name>`） `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\<theme-name>.omp.json"`，此时会输出一行字符串，执行该字符串就可以应用主题。以主题 `rudolfs-dark` 为例，执行 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json"`，然后再执行输出的字符串。
+1. 或者直接 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\paradox.omp.json" | Invoke-Expression` 就可以临时应用主题。
+1. 想要永久保存主题则运行命令 `oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\<theme-name>.omp.json" > $profile`。
 
 自定义主题：
 
@@ -441,4 +551,4 @@ function prompt {
 
 [我的主题参考](https://gist.github.com/Linhieng/092192b87a23e9c53f77249f14e267dd)
 
-虽然 oh my posh 很漂亮，但性能要求高（我的电脑延迟 800ms）。
+虽然 oh my posh 很漂亮，但性能要求高，启动速度慢，所以电脑性能差的慎选（比如我）。

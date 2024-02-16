@@ -1,7 +1,25 @@
 <!-- cSpell:ignore mshta vbscript wscript ibck -->
 # 草稿
 
+TODO:
+
+-   提取 cmd 中的专属命令，并寻找对应的替代命令
+
 ```sh
+
+net user administrator /active:yes
+# 激活 Administrator 账户
+net user administrator /active:no
+# 关闭 Administrator 账户
+
+ls | ForEach-Object { echo $_ }
+# ForEach-Object { } 是 PowerShell 中的一个 cmdlet，用于迭代集合中的每个对象
+# $_ 代表当前迭代的对象
+
+[Environment]::SetEnvironmentVariable("NODE_HOME", $(npm root -g), "User")
+# 添加用户环境变量
+# [Environment]::SetEnvironmentVariable()：是一个 .NET Framework 中 System.Environment 类的静态方法，用于设置环境变量。
+
 
 New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
 # 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
@@ -10,7 +28,49 @@ New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules
 Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
 # pwsh 中不支持 >: The '<' operator is reserved for future use.
 # 可以使用 Get-Content 代替。
+
+Get-Command
+# 获取所有可运行命令。替代 where。案例：
+(Get-Command cmd).Path
+(Get-Command cmd).Source
+
+
+ls env:
+# 获取 $env 所有值
+
+# pwsh 中使用路径变量
+explorer $env:LOCALAPPDATA
 ```
+
+一些我觉得有用的变量
+
+| env                     | path                                   |
+|-------------------------|----------------------------------------|
+| SystemDrive             | C:                                     |
+| HOMEDRIVE               | C:                                     |
+| SystemRoot              | C:\Windows                             |
+| windir                  | C:\Windows                             |
+|                         |                                        |
+| PUBLIC                  | C:\Users\Public                        |
+| USERPROFILE             | C:\Users\{username}                    |
+| APPDATA                 | C:\Users\{username}\AppData\Roaming    |
+| LOCALAPPDATA            | C:\Users\{username}\AppData\Local      |
+| TEMP                    | C:\Users\{username}\AppData\Local\Temp |
+| TMP                     | C:\Users\{username}\AppData\Local\Temp |
+|                         |                                        |
+| ProgramData             | C:\ProgramData                         |
+| ALLUSERSPROFILE         | C:\ProgramData                         |
+| ProgramFiles            | C:\Program Files                       |
+| ProgramFiles(x86)       | C:\Program Files (x86)                 |
+| CommonProgramFiles      | C:\Program Files\Common Files          |
+| CommonProgramFiles(x86) | C:\Program Files (x86)\Common Files    |
+|                         |                                        |
+| COMPUTERNAME            | DESKTOP-???                            |
+| HOMEPATH                | \Users\{username}                      |
+| LOGONSERVER             | \\DESKTOP-???                          |
+| PROCESSOR_ARCHITECTURE  | AMD64                                  |
+| USERDOMAIN              | DESKTOP-???                            |
+| USERNAME                | {username}                             |
 
 ---
 
