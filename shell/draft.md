@@ -62,3 +62,72 @@ $ <key>=<value>
 $ export <key>=<value>
 # 长期保存环境变量
 ```
+
+## prompt
+
+```bash
+my_bash_prompt() {
+    git_branch() {
+        if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) ]
+        then
+            branch=$(git symbolic-ref --short HEAD 2> /dev/null)
+            if [ $? -ne 0 ]
+            then
+                branch=$(git rev-parse --short HEAD)
+            fi
+
+            echo " (${branch}) "
+        fi
+    }
+
+    uname_hostname="\[\e[30;47m\] \u@\h "
+    full_path="\[\e[37;44m\] \w "
+    branch_color="\[\e[37;45m\]"
+    ln="\[\e[0m\]\n"
+    prompt=" \[\e[1;33m\]\\$\[\e[0m\] "
+
+    # \$(git_branch) 如果写成 $(git_branch)，则不会动态更新！
+    PS1="${uname_hostname}${full_path}${branch_color}\$(git_branch)${ln}${prompt}"
+
+}
+```
+
+
+
+```
+\u：当前用户名
+\h：当前主机名。永久修改主机名需要改 /etc/hostname, /etc/hosts
+\w：当前工作目录的完整路径
+\W：当前工作目录的基本名称
+\d：日期，以周几、月、日的形式显示
+\t：当前时间（24小时制）
+\#：命令计数器，即当前 shell 会话中执行的命令数量
+\$：如果用户是普通用户，则显示 $；如果用户是 root 用户，则显示 #
+
+
+支持的颜色
+    \e[0m：重置所有属性
+    \e[1m：粗体
+    \e[4m：下划线
+    \e[7m：反色（文本和背景颠倒）
+    设置文本颜色
+        \e[30m  黑
+        \e[31m  红
+        \e[32m  绿
+        \e[33m  黄
+        \e[34m  蓝
+        \e[35m  洋红
+        \e[36m  青
+        \e[37m  白
+    设置背景颜色
+        \e[40m  黑
+        \e[41m  红
+        \e[42m  绿
+        \e[43m  黄
+        \e[44m  蓝
+        \e[45m  洋红
+        \e[46m  青
+        \e[47m  白
+
+使用方式：用 [] 括起来，如 \[\e[0m\] 。因为转义应该用 [] 括起来，否则第二行命令行会覆盖第一行的命令行
+```
