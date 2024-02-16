@@ -22,5 +22,6 @@ $ git branch --show-current
 # 如果当前处于 detached HEAD 状态，则无输出
 # 如果不在 git 仓库中，无输出并报错
 
-
+$ git rev-parse --is-inside-work-tree
+# 判断当前目录是否在 git 仓库中
 ```
