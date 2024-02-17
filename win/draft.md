@@ -1,6 +1,14 @@
 <!-- cSpell:ignore mshta vbscript wscript ibck -->
 # 草稿
 
+```
+powershell 命令执行失败时，是否不会接收错误输出
+
+$tag = git describe --tags --exact-match HEAD
+if ($?) {}
+没错，当 $? 为 $False 时，命令执行失败，此时 $tag 值为 null。$tag -eq $null 为真。
+```
+
 TODO:
 
 -   提取 cmd 中的专属命令，并寻找对应的替代命令
