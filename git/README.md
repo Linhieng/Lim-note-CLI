@@ -122,6 +122,9 @@ $ git config --global --unset http.proxy
 
 $ git config --global core.editor 'code'
 # 使用 vscode 编辑配置文件，而不是 vim。（记得先将 vscode 添加至 path）
+
+git config --global core.excludesFile "$Env:USERPROFILE\.gitignore_global"
+# 添加全局 git 忽略文件。文件需自己创建。
 ```
 
 ## 概念
