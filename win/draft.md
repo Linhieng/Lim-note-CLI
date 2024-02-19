@@ -1,6 +1,23 @@
 <!-- cSpell:ignore mshta vbscript wscript ibck -->
 # 草稿
 
+```sh
+# 获取硬件 ID 相关命令。注意，没有什么是能够绝对标识唯一主机的，相对靠谱的是主板 UUID。
+
+systeminfo
+# 可获取网卡 MAC 地址。此外还可以获取系统很多信息，网卡、系统、BIOS、内存、时区等等
+
+wmic cpu get processorid
+# 可以获取 CPU ID。（并不唯一，Intel现在可能同一批次的CPU ID都一样）
+
+wmic diskdrive get serialnumber
+# 获取硬盘序列号。（不一定所有的电脑都能获取到硬盘序列号）
+
+wmic csproduct get UUID
+# 主板序列号（不是所有的厂商都提供一个UUID，可能返回一个全 F 的无效 UUID）
+# dmidecode -s system-uuid 用于 linux 获取主板 UUID
+```
+
 ```
 powershell 命令执行失败时，是否不会接收错误输出
 
