@@ -13,97 +13,33 @@ $ sudo <SHELL>
 
 ```
 
-# 多屏显示控制方式、info 相关命令
-
-空格向下翻页
-b 向上翻页
-q退出
-
----
-info 相关命令
-```sh
-n
-# next 下一个命令文档
-
-p
-# prev 上一个命令文档
-
-q
-# quit 退出
-
-b
-# begin 当前命令文档开头
-
-e
-# end 当前命令文档结尾
-
-```
-
 # 下载
 
 ```sh
 wget http://xxx
 yum -y xxx
 apt-get
-```
 
-# w, ls, cat, tail, rm, sed
+
+# 列出所有可更新的软件清单命令
+apt update
+# 安装指定的软件命令
+apt install <package-name>
+# 安装多个软件包
+apt install <package1> <package2> <package3>
+# 更新指定的软件命令
+apt update <package-name>
+# 删除软件包命令
+apt remove <package-name>
+# 查找软件包命令
+apt search <keyword>
+# 列出所有已安装的包
+apt list --installed
+```
 
 ```sh
 
 -   ln -snf /etc/wordpress/wp-config.php wp-config.php
--   ll
-ll -1a：查看目录（包括隐藏）
-## ls [参数]  [目录名]
-
-参数可以多个同时使用，比如 ls -arl
-参数顺序不影响
-
-参数	说明
--a	显示所有文件（包括隐藏文件）
--l	相当于 ll，显示文件的详细信息
--r	反序列出（默认是英文正序）
--t	按创建时间正序列出
--R	递归遍历所有文件
--d	控制显示结果，directory。ll -d */ 可以显示当前目录下所有文件夹
-
-
-
-
-
-pwd
-查看当前目录
-
-
-cat [文件]：查看文件内容
-
-
-rm [文件]：删除
-
-tail -n [数字] [文件]：只显示最后几行
-
-
--   mv * /var/www/html/wp-blog/
--
--   cat -n xxx
--   cat xx | tail -n 5
--   sed -i 's/database_name_here/wordpress/' /var/www/html/wp-blog/wp-config.php
--   sed -i 's/username_here/root/' /var/www/html/wp-blog/wp-config.php
--   sed -i 's/password_here/123456789/' /var/www/html/wp-blog/wp-config.php
-
-
-
-
-运行前
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/node/bin:/usr/local/node/bin
-运行 sed -i '/\/usr\/local\/node\/bin/d' /etc/profile 后
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/node/bin:/usr/local/node/bin
-
-运行前
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/node/bin
-运行 sed -i 's|/usr/local/node/bin||g' /etc/profile 后
-    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:
 
 
 ```
@@ -204,39 +140,23 @@ $ firewall-cmd --panic-off
 如 `ps -def | grep "runoob.sh" `
 
 ```bash
-
-$ grep <STRING> [arguments]
-查找符合的字符串 <STRING>
--i 忽略大小写
--w 只显示全字符合的列
-
 ## arguments 可选的参数：
 -a 或 --text : 不要忽略二进制的数据。
--A<显示行数> 或 --after-context=<显示行数> : 除了显示符合范本样式的那一列之外，并显示该行之后的内容。
 -b 或 --byte-offset : 在显示符合样式的那一行之前，标示出该行第一个字符的编号。
--B<显示行数> 或 --before-context=<显示行数> : 除了显示符合样式的那一行之外，并显示该行之前的内容。
--c 或 --count : 计算符合样式的列数。
--C<显示行数> 或 --context=<显示行数>或-<显示行数> : 除了显示符合样式的那一行之外，并显示该行之前后的内容。
+
 -d <动作> 或 --directories=<动作> : 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep指令将回报信息并停止动作。
 -e<范本样式> 或 --regexp=<范本样式> : 指定字符串做为查找文件内容的样式。
 -E 或 --extended-regexp : 将样式为延伸的正则表达式来使用。
 -f<规则文件> 或 --file=<规则文件> : 指定规则文件，其内容含有一个或多个规则样式，让grep查找符合规则条件的文件内容，格式为每行一个规则样式。
--F 或 --fixed-regexp : 将样式视为固定字符串的列表。
 -G 或 --basic-regexp : 将样式视为普通的表示法来使用。
 -h 或 --no-filename : 在显示符合样式的那一行之前，不标示该行所属的文件名称。
 -H 或 --with-filename : 在显示符合样式的那一行之前，表示该行所属的文件名称。
--i 或 --ignore-case : 忽略字符大小写的差别。
 -l 或 --file-with-matches : 列出文件内容符合指定的样式的文件名称。
 -L 或 --files-without-match : 列出文件内容不符合指定的样式的文件名称。
--n 或 --line-number : 在显示符合样式的那一行之前，标示出该行的列数编号。
 -o 或 --only-matching : 只显示匹配PATTERN 部分。
 -q 或 --quiet或--silent : 不显示任何信息。
 -r 或 --recursive : 此参数的效果和指定"-d recurse"参数相同。
 -s 或 --no-messages : 不显示错误信息。
--v 或 --invert-match : 显示不包含匹配文本的所有行。
--V 或 --version : 显示版本信息。
--w 或 --word-regexp : 只显示全字符合的列。
--x --line-regexp : 只显示全列符合的列。
 -y : 此参数的效果和指定"-i"参数相同。
 
 ```
@@ -245,7 +165,18 @@ $ grep <STRING> [arguments]
 
 ```sh
 
+# 切换用户登录
+su [username]
+
+# 查看当前登录用户信息
+w
+# 查看当前用户所属的组
+groups
+# 查看用户的 uid 信息
+id [username]
+
 -   w   查看登录用户
+who
 
 who am i
 可以查看当前用户名, pts 和登录时间
@@ -262,6 +193,20 @@ id [用户名]
 查看进程所在文件夹
 
 ```bash
+# 查看启动的某一进程
+ps -ef | grep [process-name]
+# 查看某个进程
+top -p [PID]
+# 关闭指定的进程
+kill [PID]
+# 全部进程动态实时视图
+top
+
+# df 命令报告文件系统磁盘空间利用率
+df -T
+# mount 命令是挂载文件系统用的, 不带任何参数运行, 会打印包含文件系统类型在内的磁盘分区的信息
+mount
+
 
 $ ll /proc/PID
 在该进程下的文件夹中，就有进程运行所在文件夹的信息
@@ -318,6 +263,8 @@ Arguments 为可选参数
 # 案例 - linux 版本
 
 ```sh
+$ cat /etc/os-release
+
 $ cat /proc/version
 查看 linux 内核版本
 
@@ -418,88 +365,9 @@ ip a
 
 
 
-# 杂碎 - 认识 linux - 相关命令
 
-```shell
-# 查看系统内核
-uname -a
-cat /proc/version
-# 查看系统版本
-cat /etc/os-release
-```
-```shell
-# 查看启动的某一进程
-ps -ef | grep [process-name]
-# 查看某个进程
-top -p [PID]
-# 关闭指定的进程
-kill [PID]
-# 全部进程动态实时视图
-top
-```
-```shell
-# df 命令报告文件系统磁盘空间利用率
-df -T
-# mount 命令是挂载文件系统用的, 不带任何参数运行, 会打印包含文件系统类型在内的磁盘分区的信息
-mount
-```
-```shell
-# 查看文件夹下内容
-ls
-# 创建文件夹
-mkdir [folder-name]
-# 移动/重命名文件
-mv [src-file] [dest-file]
-# 删除文件夹
-rm -r demo
-# 创建空文件
-touch [file]
-# 复制文件
-cp [src_file] [dest_file]
-```
-```shell
-# 查看当前登录用户信息
-w
-# 查看当前用户所属的组
-groups
-# 查看用户的 uid 信息
-id [username]
+# nginx
 
-
-
-
-
-
-
-# 在根目录创建一个空文件夹, 查看当前用户拥有文件夹的权限
-cd / && mkdir [folder-name] && ls -ld [folder-name]
-# 创建一个用户, 并赋予可写操作
-sudo useradd [username]
-# 设置用户密码
-sudo passwd [username]
-# 切换用户登录
-su [username]
-# 将文件夹写权限赋予其他人
-sudo chomd o+w [folder-name]
-
-
-
-
-# 列出所有可更新的软件清单命令
-apt update
-# 安装指定的软件命令
-apt install <package-name>
-# 安装多个软件包
-apt install <package1> <package2> <package3>
-# 更新指定的软件命令
-apt update <package-name>
-# 删除软件包命令
-apt remove <package-name>
-# 查找软件包命令
-apt search <keyword>
-# 列出所有已安装的包
-apt list --installed
-```
 ```shell
 # 更新包缓存
 apt update

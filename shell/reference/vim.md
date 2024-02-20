@@ -21,6 +21,7 @@
 |             `gg` | Beginning of buffer                                                                               | 文件首行
 |              `G` | End of buffer                                                                                     | 文件末尾
 | `<line-number>G` | Navigate to a specific line                                                                       | 指定行
+|           `20gg` |                                                                                                   | 跳到 20 行
 |              `^` | Beginning of line                                                                                 | 行首
 |              `$` | End of line                                                                                       | 行尾
 |              `{` | Move the cursor to the beginning of the previous paragraph                                        | 上一个段落
@@ -91,9 +92,11 @@
 
 ### 其他
 
-| shortcuts | info                                      |
-| --------: | ----------------------------------------- |
-|      `ZZ` | Write current file, if modified, and quit | 保存并退出
+|     shortcuts | info                                      |
+| ------------: | ----------------------------------------- |
+|          `ZZ` | Write current file, if modified, and quit | 保存并退出
+|      `Ctrl+c` |                                           | 取消当前命令
+| `d+Backspace` |                                           | 删除一个字符
 
 ## 编辑模式
 
@@ -112,6 +115,7 @@
 |       `ciw` | (Cut) Replacing an entire word                             | 剪切当前光标所在 word，并进入输入模式
 |         `s` | (Cut) Deleting characters along with substituting its text | 剪切当前光标所在字符，并进入输入模式
 |         `S` | (Cut) Deleting lines along with substituting their text    | 剪切当前行，并进入输入模式
+|    `Ctrl+c` |                                                            | 退出输入模式
 
 ## 底线命令模式
 
@@ -128,6 +132,8 @@
 # 退出
 :q!
 # （不保存）强制退出
+:qa!
+# 放弃所有更改并退出
 :wq
 # 保存并退出，几乎等同 :x
 :wq!
