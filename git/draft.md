@@ -1,5 +1,11 @@
 # Draft
 
+只忽略不以 `bom-` 开头的 csv 文件正确格式：
+```ignore
+*.csv
+!bom-*.csv
+```
+
 ```sh
 $ git rev-parse --abbrev-ref HEAD
 # 显示当前 HEAD 所在分支名。
