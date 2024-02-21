@@ -180,8 +180,11 @@ copy con <file>
 del <file_url>
 # 删除文件
 
-dir [/ar]
+dir /ar
 # Attribute Directory 只显示文件夹，
+
+dir /b
+# 只显示文件名称
 ```
 
 ### 磁盘管理
