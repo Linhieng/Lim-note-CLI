@@ -1,6 +1,8 @@
 
-```sh
 
+
+```sh
+ln -snf /etc/wordpress/wp-config.php wp-config.php
 
 $ lsof -i:<PORT>
 查看谁在使用该端口
@@ -13,12 +15,95 @@ $ sudo <SHELL>
 
 ```
 
+# 查看 IP 地址
+
+```bash
+$ ip addr show
+$ ip a
+$ hostname -I
+
+$ ifconfig -a
+# 需要预安装软件: sudo apt install net-tools
+$ curl ifconfig.me
+# 获取外网IP. 需要预安装 curl: sudo apt install curl
+```
+
+
+# 案例 - 解决 `service network restart` 时报错
+
+报错信息:
+```
+Bringing up interface eth0:  Error: No suitable device found: no device found for connection 'System eth0'.
+```
+
+搜索到的相关文章
+- https://blog.csdn.net/temphy/article/details/77524732
+- https://blog.csdn.net/seven_zhao/article/details/43429571
+- https://debugah.com/bringing-up-interface-eth0-error-no-suitable-device-found-no-device-found-for-connection-system-eth0-failed-23769/
+
+涉及到的文件有:
+- `/etc/udev/rules.d/70-persistent-net.rules`
+- `/etc/sysconfig/network-scripts/` 文件夹中的 `ifcfg-eth` 开头的文件
+
+涉及到的命令有
+- `ifconfig`
+- `uuidgen` 输出一个系统内的唯一标识
+- `nmcli con list` 可查看 UUID; 执行失败时试试将 list 换成 show
+- `nmcli dev list` 可查看 MAC; 执行失败时试试将 list 换成 show
+- `service network restart` 重启
+
+解决:
+1. 执行命令 `ifconfig`, 获取正确的 `HWaddr`
+2. 用正确的 `HWaddr` 替换 `vim /etc/sysconfig/network-scripts/ifcfg-eth0` 中的 `HWaddr`
+3. 再次执行 `service network restart`, 无报错
+4. 执行 `ifconfig`, 依旧显示 eth1, 而不是 eth0
+5. `rm /etc/udev/rules.d/70-persistent-net.rules`
+6. 重启系统, 再次执行 `ifconfig` 成功出现 eth0, 但没有 `ipv4` 地址
+7. 等待一下, 再次执行 `ifconfig`, 成功出现 `ipv4` 地址
+
+总结
+- `UUID` 只作用于系统内, 确保每个网卡的 `UUID` 唯一即可。通过 `uuidgen` 命令可生成系统内的唯一标识
+- `/etc/udev/rules.d/70-persistent-net.rules` 可以删除, 重启系统会自动重新生成
+- linux 中一切皆文件, `ifcfg-eth0` 就相当于 `以太网0`
+- 使用虚拟机克隆新系统时, 往往会在网卡部分出现问题, 因为 MAC 地址改变了
+
+# 区域设置（编码）
+
+`locale` 可以获取区域相关信息，比如字符编码和时间格式等等。
+
+常用语法：
+
+```syntax
+locale [<option>]
+```
+
+直接执行 `locale` 会输出和区域有关的变量，比如 `LANG` 变量。该变量表示系统语言使用的字符编码。（（注意 Linux 上环境变量区分大小写）
+
+通过 `locale -m` 或 `locale --charmaps` 可以查看所有可用的编码，比如 ASCII, BIG5, GB2312, GBK, UTF-8 等等。更多配置项可通过 `locale -h` 获取。
+
+Window 上通过 `chcp` 来修改当前终端字符集，而 Linux 上可以通过 `LANG` 变量实现类似的效果。比如 `export LANG=C.gb2312` 可以临时修改字符编码。
+
+
+# 案例 - 校正系统时间，与网络时间同步
+
+```sh
+
+yum -y install ntp
+# 安装ntp校时工具
+
+ntpdate time.nist.gov
+# 用ntpdate从时间服务器更新时间
+```
+
 # 下载
+
 
 ```sh
 wget http://xxx
 yum -y xxx
 apt-get
+
+
 
 
 # 列出所有可更新的软件清单命令
@@ -37,14 +122,128 @@ apt search <keyword>
 apt list --installed
 ```
 
-```sh
-
--   ln -snf /etc/wordpress/wp-config.php wp-config.php
-
-
-```
-
 # systemctl 、firewall 防火墙
+
+常用命令
+
+- 查看开放了哪些端口
+
+      firewall-cmd --list-ports
+
+    或
+
+      firewall-cmd --zone=public --list-ports
+
+- 开放端口
+
+  ```bash
+  firewall-cmd --zone=public --add-port=<PORT>/tcp # 重启失效
+  firewall-cmd --zone=public --add-port=<PORT>/tcp --permanent #　永久生效
+  ```
+
+- 关闭端口
+
+  ```bash
+  firewall-cmd --zone=public --remove-port=<PORT>/tcp # 重启失效
+  firewall-cmd --zone=public --remove-port=<PORT>/tcp --permanent # 永久生效
+  ```
+
+其他 firewall-cmd 命令
+
+
+- 查看防火墙是否在运行
+
+      firewall-cmd --state
+
+
+- 可以查看防火墙相关信息
+
+      firewall-cmd --list-all
+
+
+- 重新加载防火墙
+
+      firewall-cmd --reload
+
+- 查看防火墙开启的服务
+
+      firewall-cmd --list-services
+
+- 永久开启一个 http 服务
+
+      firewall-cmd --permanent --add-service=http
+
+- 查看是否拒绝所有包
+
+      firewall-cmd --query-panic
+
+- 拒接所有包（将会断开连接）
+
+      firewall-cmd --panic-on
+
+- 关闭拒接所有包（无法连接时使用 VNC 连接）
+
+      firewall-cmd --panic-off
+
+其他 systemctl 命令
+
+- 启动防火墙
+
+      systemctl start firewalld
+
+- 关闭防火墙
+
+      systemctl stop firewalld
+
+- 查看防火墙 status
+
+      systemctl status firewalld
+
+- 查看 firewalld 是否开启自启
+
+      systemctl is-enabled firewalld
+
+- 设置 firewalld 开启自启
+
+      systemctl enable firewalld.service
+
+- 设置 firewalld 关闭自启
+
+      systemctl disable firewalld.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```sh
@@ -129,36 +328,6 @@ $ firewall-cmd --panic-on
 拒接所有包（将会断开连接）
 $ firewall-cmd --panic-off
 关闭拒接所有包（无法连接时使用 VNC 连接）
-```
-
-# grep
-
-```sh
-# grep
-
-用于查找文件里符合条件的字符串，一般接在一个命令后面
-如 `ps -def | grep "runoob.sh" `
-
-```bash
-## arguments 可选的参数：
--a 或 --text : 不要忽略二进制的数据。
--b 或 --byte-offset : 在显示符合样式的那一行之前，标示出该行第一个字符的编号。
-
--d <动作> 或 --directories=<动作> : 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep指令将回报信息并停止动作。
--e<范本样式> 或 --regexp=<范本样式> : 指定字符串做为查找文件内容的样式。
--E 或 --extended-regexp : 将样式为延伸的正则表达式来使用。
--f<规则文件> 或 --file=<规则文件> : 指定规则文件，其内容含有一个或多个规则样式，让grep查找符合规则条件的文件内容，格式为每行一个规则样式。
--G 或 --basic-regexp : 将样式视为普通的表示法来使用。
--h 或 --no-filename : 在显示符合样式的那一行之前，不标示该行所属的文件名称。
--H 或 --with-filename : 在显示符合样式的那一行之前，表示该行所属的文件名称。
--l 或 --file-with-matches : 列出文件内容符合指定的样式的文件名称。
--L 或 --files-without-match : 列出文件内容不符合指定的样式的文件名称。
--o 或 --only-matching : 只显示匹配PATTERN 部分。
--q 或 --quiet或--silent : 不显示任何信息。
--r 或 --recursive : 此参数的效果和指定"-d recurse"参数相同。
--s 或 --no-messages : 不显示错误信息。
--y : 此参数的效果和指定"-i"参数相同。
-
 ```
 
 # 用户、组、权限
@@ -366,32 +535,6 @@ ip a
 
 
 
-# nginx
-
-```shell
-# 更新包缓存
-apt update
-# 安装 nginx 包
-apt instal7 nginx
-# 查找 nginx 路径，/etc/nginx 配置文件路径，/usr/sbin/nginx 可执行文件
-whereis nginx
-# 访问 nginx 部署的默认站点
-cur7 http://1ocalhost:80
-# 关闭 ng
-sudo /usr/sbin/nginx -s stop
-# 启动 ng
-sudo /usr/sbin/nginx
-# 进入 nginx 配置文件夹
-cd /etc/nginx
-# 打开 nginx 配置文件 nginx.conf，发现默认的站点配置位于 /etc/nginx/sites-enabled
-cat nginx.conf
-# 进入 sites-enabled 文件夹，并对 default 文件进行配置，修改 80 端口为 8080
-cd sites-enabled && vim default
-# 重启 nginx 服务
-sudo /usr/sbin/nginx -s reload
-# 访问 nginx 部署的默认站点
-curl http://1ocalhost:8080
-```
 
 
 

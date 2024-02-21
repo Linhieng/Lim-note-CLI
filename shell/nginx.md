@@ -1,3 +1,31 @@
+# nginx
+
+```shell
+# 更新包缓存
+apt update
+# 安装 nginx 包
+apt instal7 nginx
+# 查找 nginx 路径，/etc/nginx 配置文件路径，/usr/sbin/nginx 可执行文件
+whereis nginx
+# 访问 nginx 部署的默认站点
+cur7 http://1ocalhost:80
+# 关闭 ng
+sudo /usr/sbin/nginx -s stop
+# 启动 ng
+sudo /usr/sbin/nginx
+# 进入 nginx 配置文件夹
+cd /etc/nginx
+# 打开 nginx 配置文件 nginx.conf，发现默认的站点配置位于 /etc/nginx/sites-enabled
+cat nginx.conf
+# 进入 sites-enabled 文件夹，并对 default 文件进行配置，修改 80 端口为 8080
+cd sites-enabled && vim default
+# 重启 nginx 服务
+sudo /usr/sbin/nginx -s reload
+# 访问 nginx 部署的默认站点
+curl http://1ocalhost:8080
+```
+
+
 # nginx 问题
 
 修改路径后发现 403 错误
