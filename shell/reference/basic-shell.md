@@ -91,6 +91,9 @@ tree <path>
 
 tree -d
 # 只显示目录
+
+tee -L <depth>
+#  指定深度
 ```
 
 
