@@ -125,6 +125,11 @@ $ git config --global core.editor 'code'
 
 git config --global core.excludesFile "$Env:USERPROFILE\.gitignore_global"
 # 添加全局 git 忽略文件。文件需自己创建。
+
+git config --global http.version HTTP/1.1
+# 解决下面报错（在 WSL 中）
+# error: RPC failed; curl 16 Error in the HTTP2 framing layer
+# fatal: expected flush after ref listing
 ```
 
 ## 概念
