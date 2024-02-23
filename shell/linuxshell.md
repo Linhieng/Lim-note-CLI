@@ -625,3 +625,17 @@ $ echo /etc/rc.local >>/etc/profile &&  source /etc/profile
 添加后会看待效果（ /etc/profile　文件会在用户登录时会首先检查并执行）
 
 ```
+
+## 查看 CPU、内核和逻辑处理器
+
+.查看颗数
+
+grep 'physical id' /proc/cpuinfo | sort -u | wc -l
+
+2.查看核心数量
+
+grep 'core id' /proc/cpuinfo | sort -u | wc -l
+
+3.查看线程数
+
+grep 'processor' /proc/cpuinfo | sort -u | wc -l
