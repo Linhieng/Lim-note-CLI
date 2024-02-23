@@ -2,6 +2,11 @@
 # 草稿
 
 ```sh
+(Get-CimInstance win32_processor).NumberOfLogicalProcessors
+# 获取逻辑处理器个数
+```
+
+```sh
 # 获取硬件 ID 相关命令。注意，没有什么是能够绝对标识唯一主机的，相对靠谱的是主板 UUID。
 
 systeminfo
