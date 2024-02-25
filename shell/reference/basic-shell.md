@@ -141,13 +141,6 @@ List Directories
 
 文件权限：
 
-```
-   d                  rwx                               r-x                             r-x
-         。
-```
-
-
-
 ```sh
 
 ls

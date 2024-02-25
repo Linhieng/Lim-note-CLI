@@ -67,6 +67,8 @@
  -->
 对于来说，学习 linux，其实就是在学习命令，所以笔记的核心在于积累命令。
 
+当看到 [Linux命令大全搜索工具](https://github.com/jaywcjlove/linux-command) 这个网站后，真的已经失去了继续在这里编辑 shell 笔记的想法，我也想要创建一个自己的命令工具网站！
+
 - [bash 键盘快捷键](#hotkey)
 - [基础 shell 命令](reference/basic-shell.md)
   - 简单命令
@@ -121,6 +123,8 @@
 - 文本处理（编辑、查看）
   - [vim](reference/vim.md)
 - 未好好整理
+  - [systemctl](reference/other-shell.md#systemctl)
+  - [firewall-cmd](reference/other-shell.md#firewall-cmd)
   - [hostname](reference/other-shell.md#hostname)
   - [tar](reference/other-shell.md#tar)
   - [wget](reference/other-shell.md#wget)
@@ -238,6 +242,6 @@ Bash Information
 ## 优质参考资料
 
 - [Linux Journey](https://linuxjourney.com/)
-
+- [Linux命令大全搜索工具](https://github.com/jaywcjlove/linux-command)
 
 [SIGI]: https://www.computerhope.com/unix/signals.htm#:~:text=The%20INT%20signal%20is%20sent%20to%20a%20process%20by%20its%20controlling%20terminal%20when%20a%20user%20wants%20to%20interrupt%20the%20process.

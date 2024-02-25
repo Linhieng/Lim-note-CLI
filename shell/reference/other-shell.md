@@ -1,3 +1,154 @@
+## netstat
+
+```sh
+netstat -ntlp
+# 查看Linux中网络系统状态信息
+# -n或--numeric：直接使用ip地址，而不通过域名服务器；
+# -l或--listening：显示监控中的服务器的Socket；
+# -p或--programs：显示正在使用Socket的程序识别码和程序名称；
+# -t或--tcp：显示TCP传输协议的连线状况；
+```
+
+## lsof
+
+```sh
+lsof -i:<PORT>
+# 查看谁在使用该端口
+```
+
+## ln
+
+```sh
+ln -snf <target> <link_name>
+# 将 <target> 链接到 <link_name>
+# -s, --symbolic
+#              make symbolic links instead of hard links
+# -f, --force
+#              remove existing destination files
+# -n, --no-dereference
+#              treat LINK_NAME as a normal file if it is a symbolic link to a directory
+```
+
+
+## systemctl
+
+```sh
+systemctl status <service_name>.service
+systemctl status <service_name>
+# 可以省略 .service 后缀名
+systemctl start <service_name>.service
+# 启动服务
+systemctl stop <service_name>.service
+# 停止服务
+systemctl restart <service_name>.service
+# 重启服务
+systemctl reload  <service_name>.service
+# 如果只是想应用的新的服务配置，可以使用重新加载服务而不需要重启
+systemctl reload-or-restart <service_name>.service
+# 如果不确定是应该重新加载还是重启，可以使用 reload-or-restart
+
+
+systemctl is-active <service_name>.service
+# 检查每个特定服务是否在允许。Check if a Particular Service is Running
+
+
+
+systemctl enable <service_name>.service
+# 允许服务开机自启
+systemctl disable <service_name>.service
+# 取消服务开机自启
+systemctl is-enabled <service_name>.service
+# 查看是否开启自启
+
+
+
+systemctl list-units
+# 列出所有运行单元，包括 services, timers, sockets and more.
+systemctl list-dependencies
+# Display List of Dependent Units
+# 以树状图列出所有运行单元，树状图表示了各个服务直接的依赖关系（启动顺序）
+systemctl list-jobs
+# List All Currently Active Systemd Jobs
+# job 表示当前系统的某个操作的进度。比如启动某个服务的进度或者停止某个服务的进度。
+
+systemctl daemon-reload
+# Reload Systemd Manager Configuration Files
+# This command reloads the systemd manager configuration files. Use this command after modifying any service files or after adding new units to the system.
+
+```
+
+常见服务 / Systemd Unit
+
+```sh
+firewalld.service
+# 防火墙
+
+nginx.service
+# 开源 Web 服务器 Nginx
+
+httpd.service
+# 开源 Web 服务器软件 Apache
+```
+
+优秀文章：
+
+- [What is Systemctl? An In-Depth Overview](https://www.liquidweb.com/kb/what-is-systemctl-an-in-depth-overview/)
+
+## firewall-cmd
+
+```sh
+
+firewall-cmd --list-ports
+firewall-cmd --zone=public --list-ports
+# 查看开放了哪些端口
+
+firewall-cmd --zone=public --add-port=<PORT>/tcp # 重启失效
+firewall-cmd --zone=public --add-port=<PORT>/tcp --permanent #　永久生效
+# 开放端口
+
+
+firewall-cmd --zone=public --remove-port=<PORT>/tcp # 重启失效
+firewall-cmd --zone=public --remove-port=<PORT>/tcp --permanent # 永久生效
+# 关闭端口
+
+firewall-cmd --state
+# 查看防火墙是否在运行
+
+firewall-cmd --list-all
+# 可以查看防火墙相关信息
+
+firewall-cmd --reload
+# 重新加载防火墙
+
+firewall-cmd --list-services
+# 查看防火墙开启的服务
+
+firewall-cmd --permanent --add-service=http
+# 永久开启一个 http 服务
+
+firewall-cmd --query-panic
+# 查看是否拒绝所有包
+
+firewall-cmd --panic-on
+# 拒接所有包（将会断开连接）
+
+firewall-cmd --panic-off
+# 关闭拒接所有包（无法连接时使用 VNC 连接）
+
+firewall-cmd --query-panic
+# 查看是否拒绝所有包
+
+firewall-cmd --panic-on
+# 拒接所有包（将会断开连接）
+
+firewall-cmd --panic-off
+# 关闭拒接所有包（无法连接时使用 VNC 连接）
+```
+
+参考资料：
+
+- [firewalld 官网](https://firewalld.org/)
+
 ## hostname
 
 主机名、主机号和IP地址是不一样的概念
