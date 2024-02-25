@@ -1,5 +1,10 @@
-<!-- cSpell:ignore JanDeDobbeleer rudolfs -->
+<!-- cSpell:ignore JanDeDobbeleer rudolfs processorid csproduct -->
 # Window
+
+
+- TODO:
+    -   提取 cmd 中的专属命令，并寻找对应的替代命令
+    -   抛弃 cmd，拥抱 powershell，对标 shell！
 
 推荐配置：
 
@@ -69,17 +74,48 @@ where  <command>
 
 SCHTASKS /Create /TN <唯一标识、任务名称> /TR <运行命令> /SC <频次> /ST <开始时间?>
 # 通过该命令可以设置 Window 定时任务。指定频次为 ONCE 时，必须指定 /ST 参数。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Get-Command
+# 获取所有可运行命令。替代 where。案例：
+(Get-Command cmd).Path
+(Get-Command cmd).Source
+
+
+
+ls | ForEach-Object { echo $_ }
+# ForEach-Object { } 是 PowerShell 中的一个 cmdlet，用于迭代集合中的每个对象
+# $_ 代表当前迭代的对象
+
 ```
 
 ### 环境变量
 
 ```sh
+[Environment]::SetEnvironmentVariable("NODE_HOME", $(npm root -g), "User")
+# 添加用户环境变量
+# [Environment]::SetEnvironmentVariable()：是一个 .NET Framework 中 System.Environment 类的静态方法，用于设置环境变量。
+
+
 set
 # 查看 cmd 环境下的环境变量
 
 ls env:
 # 查看 powershell 环境下的所有环境变量
-
+# 获取 $env 所有值
 
 set <key>=<value>
 # cmd：设置临时环境变量，注意空格和引号都会被认为是 <value> 的一部分
@@ -99,6 +135,78 @@ $PSVersionTable
 $host.version
 Get-Host
 # 可查看 powershell 版本
+
+
+
+explorer $env:LOCALAPPDATA
+# pwsh 中使用路径变量正确方式
+```
+
+Windows 中一些我觉得有用的全局变量
+
+| env                     | path                                   |
+|-------------------------|----------------------------------------|
+| SystemDrive             | C:                                     |
+| HOMEDRIVE               | C:                                     |
+| SystemRoot              | C:\Windows                             |
+| windir                  | C:\Windows                             |
+|                         |                                        |
+| PUBLIC                  | C:\Users\Public                        |
+| USERPROFILE             | C:\Users\{username}                    |
+| APPDATA                 | C:\Users\{username}\AppData\Roaming    |
+| LOCALAPPDATA            | C:\Users\{username}\AppData\Local      |
+| TEMP                    | C:\Users\{username}\AppData\Local\Temp |
+| TMP                     | C:\Users\{username}\AppData\Local\Temp |
+|                         |                                        |
+| ProgramData             | C:\ProgramData                         |
+| ALLUSERSPROFILE         | C:\ProgramData                         |
+| ProgramFiles            | C:\Program Files                       |
+| ProgramFiles(x86)       | C:\Program Files (x86)                 |
+| CommonProgramFiles      | C:\Program Files\Common Files          |
+| CommonProgramFiles(x86) | C:\Program Files (x86)\Common Files    |
+|                         |                                        |
+| COMPUTERNAME            | DESKTOP-???                            |
+| HOMEPATH                | \Users\{username}                      |
+| LOGONSERVER             | \\DESKTOP-???                          |
+| PROCESSOR_ARCHITECTURE  | AMD64                                  |
+| USERDOMAIN              | DESKTOP-???                            |
+| USERNAME                | {username}                             |
+
+
+### ssh 网络
+
+```powershell
+ssh-keygen -t ECDSA
+# 在本机生成 ECDSA 密钥（公钥和私钥）。
+# 私钥通常存储在 ~/.ssh/id_ecdsa
+# 公钥通常存储在 ~/.ssh/id_ecdsa.pub
+
+ssh-copy-id username@hostname
+# 该命令可将本机公钥添加到目标主机的 ~/.ssh/authorized_keys 文件中。
+# 不过 Windows 没有内置该命令，可以选择安装 Cygwin
+Get-Content $env:USERPROFILE\.ssh\id_ecdsa.pub | ssh root@xx.xx.xx "cat >> .ssh/authorized_keys"
+# 实现与 ssh-copy-id username@hostname 同样的效果。
+
+# The authenticity of host 'xx.xx.xx.xx' can't be established.
+# ECDSA key fingerprint is SHA256:qq/xxxxxxxxxxx
+# Are you sure you want to continue connecting (yes/no/[fingerprint])?
+#
+# 选项 [fingerprint]。表示可以选择输入指纹，即指定显示的密钥指纹，以验证服务器的身份。
+# 指纹是服务器的一种唯一标识，通过对比指纹，用户可以确保他们正在连接的是正确的服务器，而不是遭遇了中间人攻击。
+# 通过 ssh-keyscan -t rsa xxx.xx.xx.xx 可以获取指定主机的 SSH RSA 公钥和指纹
+# 通过 ssh-keyscan -t ecdsa xxx.xx.xx.xx 可以获取指定主机的 SSH ECDSA 公钥和指纹
+# Windows 10 内置的 OpenSSH 客户端提供了基本的 SSH 客户端和服务器功能，可以自动存储目标主机的指纹。使用方法：ssh username@hostname
+# 目标主机的公钥通常存储在 ~/.ssh/known_hosts 中。
+# RSA 和 ECDSA 都是常用的非对称加密算法。
+# RSA 出现的早，它基于大素数的因子分解问题，安全性取决于密钥的长度（2048位或更长），所以 RSA 签名和加密速度相对较慢
+# ECDSA 是基于椭圆曲线离散对数问题的算法，相对较新，但已被广泛采用并被证明是安全的。它提供了与RSA相当的安全性，但使用较短的密钥长度，所以签名和加密速度比 RSA 快。
+
+
+ssh-keyscan -t rsa xx.xx.xx.xx | ssh-keygen -lv -f -
+# https://superuser.com/a/1111974/1834019
+# ssh-keyscan 工具用于获取指定 IP 地址的 RSA 密钥。-t rsa 参数指定了密钥类型为 RSA。这个命令的输出是被扫描主机的公钥。
+# ssh-keygen 工具来验证从 ssh-keyscan 获取的公钥并显示其详细信息。-lv 参数让 ssh-keygen 显示密钥的详细信息，而不只是密钥指纹。-f - 参数告诉 ssh-keygen 从标准输入中读取密钥。
+
 ```
 
 ### 网络
@@ -151,6 +259,16 @@ title <内容>
 ### 文件和文件夹
 
 ```sh
+Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
+# pwsh 中不支持 >  提示 The '<' operator is reserved for future use.
+# 可以使用 Get-Content 代替。
+
+New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
+# 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
+# 注意创建的是符号链接，而不是 win 中的快捷方式
+
+
+
 New-Item -Path '<new_directory_url>' -ItemType Directory
 # 创建文件夹
 
@@ -214,11 +332,58 @@ attributes disk clear readonly
 # 取消当前选中磁盘为只读。无论是移动磁盘还是机械磁盘均能立即生效。
 ```
 
+### 硬件相关信息
+
+
+```sh
+(Get-CimInstance win32_processor).NumberOfLogicalProcessors
+# 获取逻辑处理器个数
+
+
+
+
+
+
+# 获取硬件 ID 相关命令。注意，没有什么是能够绝对标识唯一主机的，相对靠谱的是主板 UUID。
+
+systeminfo
+# 可获取网卡 MAC 地址。此外还可以获取系统很多信息，网卡、系统、BIOS、内存、时区等等
+
+wmic cpu get processorid
+# 可以获取 CPU ID。（并不唯一，Intel现在可能同一批次的CPU ID都一样）
+
+wmic diskdrive get serialnumber
+# 获取硬盘序列号。（不一定所有的电脑都能获取到硬盘序列号）
+
+wmic csproduct get UUID
+# 主板序列号（不是所有的厂商都提供一个UUID，可能返回一个全 F 的无效 UUID）
+# dmidecode -s system-uuid 用于 linux 获取主板 UUID
+```
+
+
 ## 命令案例解决方案
+
+### powershell 脚本中命令执行失败时，是否不会接收错误输出
+
+```powershell
+$tag = git describe --tags --exact-match HEAD
+if ($?) {}
+```
+
+没错，当 `$?` 为 `$False` 时，命令执行失败，此时 `$tag` 值为 `null`。`$tag -eq $null` 为真。
+
+### 开启 Administrator 账户
+
+```powershell
+net user administrator /active:yes
+# 激活 Administrator 账户
+net user administrator /active:no
+# 关闭 Administrator 账户
+```
 
 ### 查看当前终端是 cmd 还是 powershell
 
-```ps1
+```powershell
 (dir 2>&1 *`|echo CMD);&<# rem #>echo PowerShell
 ```
 
@@ -249,7 +414,7 @@ $ taskkill /F /PID <进程PID>
 
 方法二：
 
-```ps1
+```powershell
 Get-Process -Id (Get-NetTCPConnection -LocalPort 8080).OwningProcess
 # 该命令用于获取占用 8080 端口的进程信息，会输出以下信息：
 #
@@ -326,7 +491,7 @@ $ format quick
 
 ### 风格：只显示当前目录
 
-```ps1
+```powershell
 function prompt {
     $p = Split-Path -leaf -path (Get-Location)
     "$p> " # 最后一个表达式默认就是返回值，所以这里省略了 return
@@ -335,7 +500,7 @@ function prompt {
 
 ### 风格：修改命令提示符的颜色
 
-```ps1
+```powershell
 function prompt {
     $promptString = Split-Path -leaf -path (Get-Location)
     "$([char]0x1b)[92m" + "$promptString" + "$([char]0x1b)[91m" + " > "
@@ -346,7 +511,7 @@ function prompt {
 
 ### 风格：正则替换路径中的 `\` 为 `/`
 
-```ps1
+```powershell
 function prompt {
     $full_path = "/" + (Get-Location) -replace ":?\\", "/"
     echo (
@@ -362,7 +527,7 @@ function prompt {
 
 参考自 [about_Prompts](https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-7.3) 和 [stack overflow](https://stackoverflow.com/questions/37367460/how-achieve-a-two-line-prompt)
 
-```ps1
+```powershell
 function prompt {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = [Security.Principal.WindowsPrincipal] $identity
@@ -381,7 +546,7 @@ function prompt {
 
 参考 [stack Overflow](https://stackoverflow.com/questions/1287718/how-can-i-display-my-current-git-branch-name-in-my-powershell-prompt)
 
-```ps1
+```powershell
 function Write-BranchName () {
     try {
         $branch = git rev-parse --abbrev-ref HEAD
@@ -423,7 +588,7 @@ function prompt {
 
 ### 风格：管理员+git分支+标签+子目录+空提交
 
-```ps1
+```powershell
 function parseGitPosition {
     <#
     可能的返回值：
