@@ -1,32 +1,14 @@
 # nginx
 
-```shell
-# 更新包缓存
-apt update
-# 安装 nginx 包
-apt instal7 nginx
-# 查找 nginx 路径，/etc/nginx 配置文件路径，/usr/sbin/nginx 可执行文件
+```sh
+nginx -s stop
+nginx -s reload
+
 whereis nginx
-# 访问 nginx 部署的默认站点
-cur7 http://1ocalhost:80
-# 关闭 ng
-sudo /usr/sbin/nginx -s stop
-# 启动 ng
-sudo /usr/sbin/nginx
-# 进入 nginx 配置文件夹
-cd /etc/nginx
-# 打开 nginx 配置文件 nginx.conf，发现默认的站点配置位于 /etc/nginx/sites-enabled
-cat nginx.conf
-# 进入 sites-enabled 文件夹，并对 default 文件进行配置，修改 80 端口为 8080
-cd sites-enabled && vim default
-# 重启 nginx 服务
-sudo /usr/sbin/nginx -s reload
-# 访问 nginx 部署的默认站点
-curl http://1ocalhost:8080
+
 ```
 
-
-# nginx 问题
+## nginx 问题
 
 修改路径后发现 403 错误
     403 错误有一个原因就是权限不够
@@ -42,25 +24,28 @@ curl http://1ocalhost:8080
     2. 修改后没有重启一下 nginx，重加载命令是 nginx -s reload
 
 
-# nginx.conf 配置说明
+## nginx.conf 配置说明
 
-    $uri 变量是什么？
-        访问：http:itaem.cn;39000/js/a.js
-        $uri 就是 /js/a.js
+`$uri` 变量是什么？
+    访问：http:itaem.cn;39000/js/a.js
+    $uri 就是 /js/a.js
 
-# nginx.conf 配置示例
+## nginx.conf 配置示例
 
 最简单的配置
 
-    http {
-      server {
-        listen   80; # 设置监听端口
-        root     /usr/80; # 会自动获取此目录下的 index.html 文件
-      }
+```conf
+http {
+    server {
+    listen   80; # 设置监听端口
+    root     /usr/80; # 会自动获取此目录下的 index.html 文件
     }
+}
+```
 
 添加证书：
 
+```conf
 server {
     listen 443;
     root /usr/443;
@@ -72,47 +57,51 @@ server {
     # 指定私钥文件路径
     ssl_certificate_key /path/to/example.com.key;
 }
+```
 
 添加请求头
 
-    server {
-        listen          39000;
-        location / {
-                proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header    X-Real-IP $remote_addr;
-        }
+```conf
+server {
+    listen          39000;
+    location / {
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header    X-Real-IP $remote_addr;
     }
+}
+```
 
 代理后台服务器
 
     浏览器想服务器的 39000 端口发送 get 请求后，nginx 会将该请求转发给服务器上的 3900 端口。
 
-    server {
-        listen          39000;
-        location / {
-                proxy_pass      http://127.0.0.1:3900;
-        }
+```conf
+server {
+    listen          39000;
+    location / {
+            proxy_pass      http://127.0.0.1:3900;
     }
+}
+```
 
-
-# 卸载 nginx
+## 卸载 nginx
 
 // 使用的 yum 安装的 nginx
 
-1. 输入 ps -ef | grep nginx 检查是否还在运行 nginx
+1. 输入 `ps -ef | grep nginx` 检查是否还在运行 nginx
 
-2. 输入 nginx -s stop 停止运行 nginx
+2. 输入 `nginx -s stop` 停止运行 nginx
 
-3. 输入 netstat -lntp 查看一下 80 端口是否关闭
+3. 输入 `netstat -lntp` 查看一下 80 端口是否关闭
 
-4. 输入 whereis nginx 查找 nginx 的相关文件路径
+4. 输入 `whereis nginx` 查找 nginx 的相关文件路径
 
-5. 输入 find / -name nginx 查找 nginx 的相关文件
+5. 输入 `find / -name nginx` 查找 nginx 的相关文件
 
 6. 删除找到的相关文件
-    rm -rf /usr/sbin/nginx
+    `rm -rf /usr/sbin/nginx`
     ...
     一个一个删（有没有快捷方法？）
 
 7. 再使用 yum 清理一下
-    yum remove nginx
+    `yum remove nginx`

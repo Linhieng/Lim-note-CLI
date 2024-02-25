@@ -169,7 +169,37 @@ ls -t
 ls -r
 # 倒序。reverse order while sorting
 
+
+
+ll /proc/PID
+# 在该进程下的文件夹中，就有进程运行所在文件夹的信息
+# cwd -> /usr/image-hosting-2
+# cwd 后面的就是程序运行所在文件夹
+#
+# exe -> /usr/local/node/bin/node
+# exe 后面代表的是执行程序的文件夹
+
+
+
+
+
 ```
+
+---
+
+每个终端窗口，都会在 /dev/pts/ 目录下有对应的伪终端设备文件
+`ls /dev/pts`
+如果只有一个窗口，则输出 0  ptmx
+0 文件夹就是伪终端设备文件
+
+将输出内容输出到对应的伪终端设备文件，则会将内容输出到对应的终端窗口
+
+在第一个终端窗口（0）下执行命令：
+`echo "hello" > /dev/pts/1`
+
+此时第二个终端窗口（1）会显示 hello
+
+---
 
 ## chmod
 
@@ -317,6 +347,17 @@ cat <file> -ns
 
 cat <file> -bs
 # 当遇到有连续两行以上的空白行，只输出一行的空白行。然后对非空白行进行编号
+
+
+cat /etc/os-release
+cat /proc/version
+# 查看 linux 内核版本
+
+
+cat /etc/redhat-release
+# 列出所有版本信息，只适合Redhat系的Linux
+cat /etc/issue
+# 列出所有版本信息，适用于所有的Linux发行版
 ```
 
 ## less
@@ -537,6 +578,10 @@ find <path> -name <file>
 
 find <path> -type d -name <file>
 # 指定查找类型为目录
+
+
+find . -type d -name "node_modules" -prune -o -type f -name "playwright.config*"
+# 在该目录下查找 playwright.config 开头文件，并忽略 node_modules 文件夹
 ```
 
 ## help
@@ -910,6 +955,21 @@ grep -<line-number>
 -r 或 --recursive : 此参数的效果和指定"-d recurse"参数相同。
 -s 或 --no-messages : 不显示错误信息。
 -y : 此参数的效果和指定"-i"参数相同。
+
+
+
+
+
+
+grep 'physical id' /proc/cpuinfo | sort -u | wc -l
+# 查看颗数
+
+grep 'core id' /proc/cpuinfo | sort -u | wc -l
+# 查看核心数量
+
+grep 'processor' /proc/cpuinfo | sort -u | wc -l
+# 查看线程数
+
 ```
 
 

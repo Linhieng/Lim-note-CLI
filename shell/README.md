@@ -65,6 +65,11 @@
 		chgrp
 
  -->
+
+- 迁移说明
+  - prompt 相关内容迁移至[博客文章](https://github.com/Linhieng/linhieng.github.io/blob/main/_posts/2024-02-22-style-ternimal.md)，以后处理终端命令行提示符的内容都写在博客中
+  - vim 的使用也迁移至博客文章中
+
 对于来说，学习 linux，其实就是在学习命令，所以笔记的核心在于积累命令。
 
 当看到 [Linux命令大全搜索工具](https://github.com/jaywcjlove/linux-command) 这个网站后，真的已经失去了继续在这里编辑 shell 笔记的想法，我也想要创建一个自己的命令工具网站！
