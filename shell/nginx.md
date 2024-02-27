@@ -1,11 +1,23 @@
 # nginx
 
 ```sh
-nginx -s stop
-nginx -s reload
-
 whereis nginx
+# 查找 nginx 命令路径
 
+sudo nginx
+# 启动
+
+sudo nginx -s stop
+# 立即停止
+
+sudo nginx -s quit
+# 处理完当前连接后再停止
+
+sudo nginx -s reload
+# 重新加载配置文件。
+
+sudo nginx -t
+# 测试当前配置文件是否有效。会输出配置文件路径
 ```
 
 ## nginx 问题
@@ -82,6 +94,64 @@ server {
             proxy_pass      http://127.0.0.1:3900;
     }
 }
+```
+
+将 80 端口永久重定向到 443 端口
+
+```conf
+    server {
+        listen 80;
+        # root /usr/80;
+        server_name oonoo.cn;
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+```
+
+或
+```conf
+    server {
+        listen 80 default_server;
+        # server_name oonoo.cn;
+        listen [::]:80 default_server;
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+```
+
+直接通过 IP 访问时，直接转到域名。（如果故意通过 ip 访问 443 端口，则无效）
+
+```js
+
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _; # 匹配任何域名，包括空字符串
+
+        location / {
+            return 301 https://www.oonoo.cn$request_uri;
+        }
+    }
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name oonoo.cn www.oonoo.cn;
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+    server {
+        listen 443;
+        root /usr/443;
+
+        ssl on;
+        ssl_certificate /.keys/cert.pem;
+        ssl_certificate_key /.keys/key.key;
+    }
 ```
 
 ## 卸载 nginx

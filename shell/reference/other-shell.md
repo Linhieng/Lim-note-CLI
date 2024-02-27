@@ -244,6 +244,9 @@ ln -snf <target> <link_name>
 
 sudo ln -s /usr/local/go/bin/go /usr/bin/go
 # 这个是将命令通过软连接的方式链接到 /usr/bin 目录下（ln 命令）
+
+ln -s 443 80
+# 80 端口使用 443 端口的内容。
 ```
 
 
