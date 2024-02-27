@@ -181,8 +181,16 @@ ll /proc/PID
 
 
 
+ls -1
+# 以每行一个文件的方式进行列出
+ls -C
+ls -c
+ls -x
+ls -X
 
-
+ls -1 target-folder2/ | sed "s|^|$(realpath target-folder2/)/|" | xargs -I {} mv {} target_folder/
+# 将 target-folder2/ 中的内容都移动到 target_folder 中。
+# 也可以用 mv target-folder2/* target_folder 代替。
 ```
 
 ---
@@ -564,6 +572,18 @@ find [参数] [文件]
 
 find / -type f -size 0 -exec ls -l {} \;
 # 查找系统中所有文件长度为0的普通文件，并列出它们的完整路径。
+
+find . -maxdepth 2 -type d -name "node_modules"
+# 查找 node_modules
+
+find . -maxdepth 2 \( -name "*.js" -o -name "*.html" -o -name "*.json" \) -exec dirname {} \; | uniq
+# 查找当前目录中包含 js / html / json 文件的文件夹
+
+find . -maxdepth 2 -type d -exec sh -c 'ls -1 "{}"/*.js >/dev/null 2>&1' \; -print
+# 查找包含 js 文件的文件夹
+
+find . -maxdepth 2 \( -name "*.js" -o -name "*.html" -o -name "*.json" \) -exec dirname {} \; | uniq | xargs -I {} mv {} target_folder
+#  将找到的目录全部移动到 target_folder 目录中。
 
 ```
 

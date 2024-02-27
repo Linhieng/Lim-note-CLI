@@ -1,3 +1,24 @@
+## uniq
+
+忽略重复行
+
+
+```sh
+$ echo -e 'hi\nhi\nhi\nhello' | uniq
+hi
+hello
+```
+
+## dirname
+
+```sh
+dirname  /usr/80
+/usr
+
+dirname  /usr/itaem-test-api/img/
+/usr/itaem-test-api
+```
+
 ## ssh-keygen
 
 ```sh
