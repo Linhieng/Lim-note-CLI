@@ -1,3 +1,22 @@
+## htpasswd
+
+
+
+```sh
+htpasswd -c <file> <username>
+# 需要先安装 yum install httpd-tools 或者 apt install apache2-utils
+# 然后在 nginx 配置文件中添加下面内容就可以实现网站加密
+#                auth_basic "Admin Only";
+#                auth_basic_user_file /etc/apache2/.htpasswd;
+```
+
+## arch
+
+```sh
+arch
+# 查看系统架构。比如 x86_64
+```
+
 ## uniq
 
 忽略重复行
