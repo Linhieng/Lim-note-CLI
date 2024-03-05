@@ -34,9 +34,10 @@ $ npm config list -long
 - `registry`
     - 配置镜像地址。拥有代理的情况下不建议修改镜像地址。
     - 曾经收集的地址：
-        - 淘宝源 `https://registry.npm.taobao.org`
-        - 国内源 `https://registry.npmmirror.com`
         - 默认源 `https://registry.npmjs.org`
+        - 淘宝源 `https://registry.npmmirror.com`
+        - 腾讯源 `https://mirrors.cloud.tencent.com/npm/`
+        - 华为源 `https://mirrors.huaweicloud.com/repository/npm/`
 - `proxy`
     - 配置代理，建议结合 clash 使用。
     - 比如：`npm config set proxy http://127.0.0.1:7890`
