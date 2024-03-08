@@ -372,4 +372,7 @@ $ git revert -n main~2 main~3 main~4
 
 $ git revert --abort
 # 取消本次 revert 操作
+
+git revert --no-commit HEAD
+# revert，但不提交
 ```
