@@ -1,5 +1,11 @@
 # 草稿
 
+https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1
+用于临时修改环境变量的 set 命令
+
+https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/setx
+用于永久修改环境变量的 setx 命令
+
 ```powershell
 
 
