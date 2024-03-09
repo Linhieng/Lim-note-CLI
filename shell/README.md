@@ -158,9 +158,16 @@ Bash keyboard shortcuts
 | `Ctrl+u` |     | 清除光标左侧的所有内容
 | `Ctrl+k` |     | 清除光标右侧的所有内容
 | `Ctrl+w` |     | 删除光标前的一个单词
-| `Ctrl+c` |     | 取消当前的输入行
-| `Ctrl+d` |     | 如果当前行为空，则退出终端
+| `Ctrl+c` |     | 取消当前的输入行；结束当前任务
+| `Ctrl+d` |     | 如果当前行为空，则退出终端（退出登录）
 | `Ctrl+z` |     | 挂起任务，后续可通过 `jobs` 查看
+| `Ctrl+l` |     | 清屏（但不清空内容）
+
+| hotkey           |     |
+| ---------------- | --- |
+| `Ctrl+Backspace` |     | 某些无法通过删除键删除的内容，再按下 ctrl。
+| `Ctrl+insert`    |     | 复制
+| `Shift+insert`   |     | 粘贴
 
 
 Bash Navigation
