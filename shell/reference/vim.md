@@ -97,6 +97,7 @@
 |          `ZZ` | Write current file, if modified, and quit | 保存并退出
 |      `Ctrl+c` |                                           | 取消当前命令
 | `d+Backspace` |                                           | 删除一个字符
+|      `Ctrl+Z` |                                           | 挂起当前程序，可通过 `fg <jobs_num>` 恢复
 
 ## 编辑模式
 

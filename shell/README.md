@@ -160,6 +160,7 @@ Bash keyboard shortcuts
 | `Ctrl+w` |     | 删除光标前的一个单词
 | `Ctrl+c` |     | 取消当前的输入行
 | `Ctrl+d` |     | 如果当前行为空，则退出终端
+| `Ctrl+z` |     | 挂起任务，后续可通过 `jobs` 查看
 
 
 Bash Navigation

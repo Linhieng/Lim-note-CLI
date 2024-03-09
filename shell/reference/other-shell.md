@@ -1,3 +1,72 @@
+## disown
+
+然后使用 disown %作业号 来从 shell 的作业表中移除该作业，使其脱离 shell 的控制。这样后台程序将不再受到 shell 关闭的影响，但仍在后台运行。
+
+```sh
+$ tail -f /etc/hosts &
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+# [3]   Running                 tail -f /etc/hosts &
+$ disown %3
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+$ ps aux | head -1 && ps aux | grep tail | grep -v grep
+# 虽然不在 jobs 中，但可以在这里查看
+$ kill <PID>
+# 然后关闭
+```
+
+## bg
+
+如果希望后台进程不维持在后台停止状态，而是让其继续执行，可以通过 bg 命令将其转为后台执行状态
+```sh
+$ tail -f /etc/hosts &
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+# [3]   Running                 tail -f /etc/hosts &
+$ kill -STOP %3
+[3]+  Stopped                 tail -f /etc/hosts
+$ jobs
+# [1]   Stopped                 vim aa.txt
+# [2]-  Stopped                 vim ab.txt
+# [3]+  Stopped                 tail -f /etc/hosts
+$ bg 3
+# [3]+ tail -f /etc/hosts &
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+# [3]   Running                 tail -f /etc/hosts &
+```
+
+## fg
+
+```sh
+fg <jobs 编号>
+# 将其唤醒到前台。如果不加编号，则唤醒最近被放入后台的任务
+```
+
+## jobs
+
+```sh
+jobs -l
+# 查看当前后台进程
+
+# 案例
+$ tail -f /etc/hosts &
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+# [3]   Running                 tail -f /etc/hosts &
+$ kill %3
+# [3]   Terminated              tail -f /etc/hosts
+$ jobs
+# [1]-  Stopped                 vim aa.txt
+# [2]+  Stopped                 vim ab.txt
+```
+
 ## htpasswd
 
 
@@ -22,7 +91,7 @@ arch
 忽略重复行
 
 
-```sh
+```shps -aux | grep aa.txt | grep -v grep
 $ echo -e 'hi\nhi\nhi\nhello' | uniq
 hi
 hello
@@ -511,6 +580,10 @@ ps -e | grep ssh
 # 此时应该看到有 sshd 服务，还会有一个 ssh-agent
 # 如果没有 ssh ,可以先启动 ssh
 #    sudo /etc/init.d/ssh start
+
+
+ps -aux | grep aa.txt | grep -v grep
+# 查看进程状态
 ```
 
 ## top
