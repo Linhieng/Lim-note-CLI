@@ -183,10 +183,14 @@ ll /proc/PID
 
 ls -1
 # 以每行一个文件的方式进行列出
-ls -C
 ls -c
-ls -x
+ls -C
 ls -X
+# 递增。先上到下，再左到右
+ls -x
+# 递增。先左到右，再上到下
+ls -v
+# 按数字大小排序。上到下，左到右
 
 ls -1 target-folder2/ | sed "s|^|$(realpath target-folder2/)/|" | xargs -I {} mv {} target_folder/
 # 将 target-folder2/ 中的内容都移动到 target_folder 中。
@@ -649,6 +653,13 @@ whatis <command>
 # 获取命令的简短描述，内容来自手册（man）
 ```
 
+## unalias
+
+```sh
+unalias <alias>
+# 移除别名
+```
+
 ## alias-unalias
 
 ```sh
@@ -659,8 +670,9 @@ alias <alias>=<long-command>
 alias
 # 查看所有命令别名
 
-unalias <alias>
-# 移除别名
+alias get-all-user='{ echo "Username:Password:UID:GID:User Description:Home Directory:Login Shell"; cat /etc/passwd; } | column -t -s ":"'
+
+alias get-all-group='{ echo "Name:Password:ID:Members"; cat /etc/group; } | column -t -s ":"'
 ```
 
 ## head
