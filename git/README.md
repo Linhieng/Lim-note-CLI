@@ -131,6 +131,11 @@ git config --global http.version HTTP/1.1
 # 解决下面报错（在 WSL 中）
 # error: RPC failed; curl 16 Error in the HTTP2 framing layer
 # fatal: expected flush after ref listing
+
+git config core.autocrlf
+# true： 在提交时将换行符转换为 LF，在检出时将 LF 转换为 CRLF。相当于为所有文件自动设置 core.eol = text
+# input：不进行任何转换。
+
 ```
 
 ## 概念
