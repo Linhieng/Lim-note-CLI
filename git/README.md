@@ -56,6 +56,7 @@ $ git -h <command>
     - [whatchanged](./reference/other.md#whatchanged)
     - [stash](./reference/other.md#stash)
     - [ls-remote](./reference/other.md#ls-remote)
+    - [submodule](./reference/other.md)
 
 ## git初始化与配置
 

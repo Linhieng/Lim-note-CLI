@@ -55,3 +55,21 @@ $ git ls-remote -q
 
 
 ```
+
+## submodule
+
+```sh
+
+$ git submodule add <git-repo> <folder-name>
+# 添加一个子模块
+# 添加时，默认会克隆对应子模块，不过当别人从云端克隆该仓库时，是不会自动下载子模块中的内容的。
+# 如果想要自动下载子模块内容，可以运行 git clone --recursive <git-repo>
+# 或者可以在克隆后的仓库中通过下面两个命令实现同样的效果：
+#           git submodule init      先初始化
+#           git submodule update    然后更新子模块内容
+# 当子模块云端仓库更新时，只需要进入子模块目录，然后 git pull 就可以获取最新的子模块内容了
+
+
+$ git submodule init
+$ git submodule update
+```

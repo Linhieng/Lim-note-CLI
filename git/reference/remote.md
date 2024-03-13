@@ -28,7 +28,10 @@ Clones a repository into a newly created directory, creates remote-tracking bran
 ```sh
 $ git clone <repository_git-url> [<directory-name>]
 # Clone a repository into a new directory
-# 当克隆一个本次仓库时，第二个参数不能省略。使用案例：git clone D:\tmp\t1 D:\tmp\t2
+# 当克隆一个本次仓库时，第二个参数不能省略。使用案例：
+#       git clone D:\tmp\t1 D:\tmp\t2
+#       git clone D:\tmp\t\.git t2
+
 
 $ git clone -b <branch-name> <url>
 # 只克隆指定分支。注意分支名要区分大小写
@@ -46,6 +49,10 @@ $ git clone --shallow-since="1 week" <url>
 
 $ git clone --shallow-since="2023-09-06" <url>
 # 克隆 2023-09-06 日之后的
+
+
+$ git clone --recursive <git-repo>
+# 克隆时，同时克隆子模块中的内容
 ```
 
 ## fetch
