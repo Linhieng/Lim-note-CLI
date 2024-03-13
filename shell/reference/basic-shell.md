@@ -246,6 +246,14 @@ $ chmod 744 hello.sh
 # 为其增加属主的执行权限。
 $ /bin/bash hello.sh
 # 使用 bash 命令解释器执行 hello.sh 脚本文件。
+
+
+
+$ chown -R keety /path/to/abc
+# 将 /path/to/abc 文件夹的所有者设置为 keety 用户
+
+$ chmod -R u+rwx /path/to/abc
+# 为 keety 分配  /path/to/abc 文件夹的 rwx 权限
 ```
 
 ## chown
