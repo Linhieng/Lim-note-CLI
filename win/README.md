@@ -270,7 +270,12 @@ New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules
 # 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
 # 注意创建的是符号链接，而不是 win 中的快捷方式
 
-
+cd C:\soft\it\mkcert
+New-Item -ItemType SymbolicLink -Target .\mkcert-v1.4.4-windows-amd64.exe -Path mkcert.exe
+# 为 mkcert-v1.4.4-windows-amd64.exe 创建一个软连接，名为 mkcert.exe 注意要有后缀名 exe
+# 或者，如果已经添加 C:\soft\it\mkcert 到 path，则可以不需要移动到 mkcert，直接：
+New-Item -ItemType SymbolicLink -Target mkcert-v1.4.4-windows-amd64.exe -Path C:\soft\it\mkcert\mkcert.exe
+# 注意两个 .exe 都不能省略。
 
 New-Item -Path '<new_directory_url>' -ItemType Directory
 # 创建文件夹
