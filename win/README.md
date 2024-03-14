@@ -221,6 +221,9 @@ Get-NetTCPConnection
 Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 80}
 # 只查看 80 端口的占用情况 $_ 变量表示管道传递的对象。
 
+Get-NetTCPConnection | Where-Object { $_.LocalPort -gt 3000 } | Format-Table -AutoSize
+# 查看大于 3000 端口的占用情况，同时自适应表格宽度。
+
 ipconfig /all
 # 查看所有网卡的全部配置信息
 
@@ -410,6 +413,12 @@ $ tasklist | findstr "PID值"
 
 $ taskkill /F /PID <进程PID>
 # 通过 PID 终止对应进程
+
+$ tasklist | findstr "imagename eq nginx.exe"
+# 查找 nginx.exe
+
+$ tasklist | Select-Object -First 3 && tasklist | findstr "imagename eq nginx.exe"
+# 通过显示前几行的方式显示表头，方便阅读。
 ```
 
 方法二：
