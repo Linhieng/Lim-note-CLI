@@ -60,6 +60,9 @@ $ git commit --amend
 
 $ git commit --allow-empty
 # 创建一个空提交
+
+$ git commit -a --amend --no-edit
+# 将当前变更内容直接和前一个提交合并，不需要修改提交注释
 ```
 
 ## branch
