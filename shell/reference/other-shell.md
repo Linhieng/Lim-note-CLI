@@ -1,3 +1,10 @@
+## column
+
+```sh
+sudo cat /etc/shadow | column -t -s ':'
+# 以 : 作为分隔符打印输出
+```
+
 ## usermod
 
 ```sh
@@ -43,45 +50,6 @@ getent group
 # 获取所有组
 # 等同 cat /etc/group
 ```
-
-### cat /etc/group
-
-```sh
-{ echo "Name:Password:ID:Members"; cat /etc/group; } | column -t -s ':'
-```
-
-- 组名（Group Name）
-    ： 这一列包含了组的名称，即组的标识符。
-- 组密码（Group Password）
-    ： 这一列通常包含一个加密的组密码。在许多 Linux 系统中，这个字段通常被设置为空，或者包含一个占位符（如 x），而实际的密码信息则存储在 /etc/gshadow 文件中。
-- 组ID（Group ID）
-    ： 这一列包含了组的唯一标识符，称为组ID（GID）。每个组都有一个唯一的GID，在系统中用于标识组。
-- 组成员（Group Members）
-    ： 这一列包含了属于该组的用户列表。用户之间用逗号分隔，表示他们是该组的成员。
-
-### cat /etc/passwd
-
-```sh
-cat /etc/passwd | column -t -s ':'
-# 好看点
-
-{ echo "Username:Password:UID:GID:User Description:Home Directory:Login Shell"; cat /etc/passwd; } | column -t -s ':'
-# 添加表头
-```
-- 用户名（User Name）
-    ： 这一列包含了用户的登录名。当用户登录系统时，会使用该用户名进行身份验证。
-- 密码（Password）
-    ： 这一列存储了用户的加密密码或密码占位符。在过去，/etc/passwd 文件中存储着用户的密码，但现在通常用一个占位符来表示密码被加密存储在 /etc/shadow 文件中。
-- 用户ID（User ID）
-    ： 这一列存储了用户的唯一标识符，称为用户ID（UID）。每个用户都有一个唯一的UID，用于在系统中标识用户。
-- 组ID（Group ID）
-    ： 这一列存储了用户所属的组的唯一标识符，称为组ID（GID）。每个用户都至少属于一个组，该组通常是用户的主组。
-- 用户描述信息（User Description）
-    ： 这一列存储了用户的描述信息，通常是用户的全名或注释。这个字段可以包含任意文本，但通常包含用户的真实姓名或其他相关信息。
-- 家目录路径（Home Directory）
-    ： 这一列存储了用户的家目录的路径。家目录是用户登录后默认进入的目录，通常包含用户的个人文件和配置信息。
-- 默认 shell（Login Shell）
-    ： 这一列存储了用户登录后默认使用的 shell 的路径。shell 是用户与操作系统交互的界面，它解释和执行用户输入的命令。
 
 ## disown
 
