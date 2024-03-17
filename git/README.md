@@ -95,6 +95,13 @@ git config <options?> <name?> <value?>
 - `--worktree`
     - 可选。需开启 extensions.worktreeConfig 配置才生效。目录为 .git/config.worktree
 
+常用属性：
+
+- `--show-origin`
+  - 输出配置项来源
+- `--unset`
+  - 删除某项配置
+
 ```sh
 $ git config -l
 # 按配置文件优先级从低到高，列出所有配置项。如果指向查看指定某个配置文件，请添加对应参数。
