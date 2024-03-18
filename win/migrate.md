@@ -155,6 +155,15 @@ $host.version
 Get-Host
 # pwsh 版本信息
 
+Get-CimInstance -ClassName Win32_OperatingSystem
+$PSVersionTable.OS.Version
+# win 版本号。比如 19045.3805 版本时，能获取到 19045
+
+Get-ItemProperty -Path  "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" | Select-Object -ExpandProperty "UBR"
+# 通过注册表获取版本号后面的 3805
+Get-ItemProperty -Path  "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" | Select-Object -Property "CurrentBuildNumber", "UBR"
+# 获取直接显示内部版本号和 UBR
+
 
 (Get-CimInstance win32_processor).NumberOfLogicalProcessors
 # 获取逻辑处理器个数
