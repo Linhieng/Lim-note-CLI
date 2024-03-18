@@ -5,30 +5,6 @@ sudo cat /etc/shadow | column -t -s ':'
 # 以 : 作为分隔符打印输出
 ```
 
-## usermod
-
-```sh
-sudo usermod -aG <group>  <user>
-# 将 <user> 添加到 <group> 中
-```
-
-## groupadd
-
-```sh
-sudo groupadd <group-name>
-```
-
-## adduser
-
-```sh
-sudo adduser <new-user-name>
-```
-## useradd
-
-```sh
-sudo useradd <new-user-name>
-```
-
 ## tr
 
 ```sh
@@ -563,7 +539,7 @@ $ hostname -I # 查看分配给系统网络接口的所有IP地址
 
 ## tar
 
--x 参数是解压
+<!-- -x 参数是解压
 -f 参数是指定文件夹
 -C 参数是指定解压到哪个文件夹
 -v 显示冗余信息（往控制台输出信息）
@@ -571,7 +547,7 @@ $ hostname -I # 查看分配给系统网络接口的所有IP地址
 ```sh
 tar -xvf node-v16.17.0-linux-x64.tar.xz -C /usr/local/lib/
 # 解压到 /usr/local/lib/ 文件夹里面
-```
+``` -->
 
 ## apt, apt-get
 
