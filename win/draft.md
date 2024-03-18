@@ -24,3 +24,20 @@ New-Alias -Name "ls" -Value "Get-ChildItem"
 Get-NetTCPConnection | Where-Object { $_.LocalPort -ge 3000 } | Format-Table -AutoSize
 # 查看当前正在使用的 TCP 连接和端口信息。然后你可以通过筛选端口号大于 3000 的连接
 ```
+
+## powershell 支持的颜色
+
+```sh
+# 定义颜色数组
+$colors = @(
+    "Black", "DarkBlue", "DarkGreen", "DarkCyan",
+    "DarkRed", "DarkMagenta", "DarkYellow", "Gray",
+    "DarkGray", "Blue", "Green", "Cyan",
+    "Red", "Magenta", "Yellow", "White"
+)
+
+# 遍历数组并输出每种颜色的示例
+foreach ($color in $colors) {
+    Write-Host "This is $color text" -ForegroundColor $color
+}
+```
