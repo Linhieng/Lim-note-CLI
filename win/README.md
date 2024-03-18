@@ -359,13 +359,16 @@ systeminfo
 
 wmic cpu get processorid
 # 可以获取 CPU ID。（并不唯一，Intel现在可能同一批次的CPU ID都一样）
+# 实测，重装系统不会改变它
 
 wmic diskdrive get serialnumber
 # 获取硬盘序列号。（不一定所有的电脑都能获取到硬盘序列号）
+# 实测，重装系统不会改变它
 
 wmic csproduct get UUID
 # 主板序列号（不是所有的厂商都提供一个UUID，可能返回一个全 F 的无效 UUID）
 # dmidecode -s system-uuid 用于 linux 获取主板 UUID
+# 实测，重装系统不会改变它
 ```
 
 
