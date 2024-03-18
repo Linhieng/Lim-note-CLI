@@ -33,3 +33,15 @@ $ git branch --show-current
 $ git rev-parse --is-inside-work-tree
 # 判断当前目录是否在 git 仓库中
 ```
+
+## refs
+
+`/refs/tags`
+`/refs/heads`
+`/refs/remotes`
+
+
+未验证：
+- `refs/stash`：这个文件记录了 git stash 命令创建的临时提交的引用。
+- `refs/notes/`：这个目录用于存储 Git Notes，它是一种可以附加在 Git 对象（如提交对象）上的附加信息。
+- `refs/replace/`：这个目录包含了替换对象的引用，它允许用户指定替换规则，将一个对象替换为另一个对象。

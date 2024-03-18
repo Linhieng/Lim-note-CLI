@@ -143,6 +143,8 @@ git config core.autocrlf
 # true： 在提交时将换行符转换为 LF，在检出时将 LF 转换为 CRLF。相当于为所有文件自动设置 core.eol = text
 # input：不进行任何转换。
 
+git config --global init.defaultBranch main
+# 更改默认分支名称为 main
 ```
 
 ## 概念
