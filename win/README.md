@@ -49,9 +49,6 @@ powershell -ExecutionPolicy ByPass -File "bat.ps1"
 tree <path> [\F] [\A]
 # 输出目录树。\F 表示包含文件。`\A` 表示使用 ASCII 字符构成 tree
 
-CertUtil -hashfile <file_url> [<hash>]
-# 可用于计算文件的哈希值。默认 SHA1，还支持 MD5, SHA256 等
-
 echo (off | on)
 # 显示/隐藏命令行提示符前的路径
 
@@ -74,103 +71,21 @@ where  <command>
 
 SCHTASKS /Create /TN <唯一标识、任务名称> /TR <运行命令> /SC <频次> /ST <开始时间?>
 # 通过该命令可以设置 Window 定时任务。指定频次为 ONCE 时，必须指定 /ST 参数。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Get-Command
-# 获取所有可运行命令。替代 where。案例：
-(Get-Command cmd).Path
-(Get-Command cmd).Source
-
-
-
-ls | ForEach-Object { echo $_ }
-# ForEach-Object { } 是 PowerShell 中的一个 cmdlet，用于迭代集合中的每个对象
-# $_ 代表当前迭代的对象
-
 ```
 
 ### 环境变量
 
+https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1
+用于临时修改环境变量的 set 命令
+
+https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/setx
+用于永久修改环境变量的 setx 命令
+
+
 ```sh
-[Environment]::SetEnvironmentVariable("NODE_HOME", $(npm root -g), "User")
-# 添加用户环境变量
-# [Environment]::SetEnvironmentVariable()：是一个 .NET Framework 中 System.Environment 类的静态方法，用于设置环境变量。
-
-
 set
 # 查看 cmd 环境下的环境变量
-
-ls env:
-# 查看 powershell 环境下的所有环境变量
-# 获取 $env 所有值
-
-set <key>=<value>
-# cmd：设置临时环境变量，注意空格和引号都会被认为是 <value> 的一部分
-# ps1：等同 Set-Variable，用于设置变量
-
-$ENV:<key> = "<value>"
-# 设置临时环境变量，仅用于 powershell。变量值必须使用单引号/双引号括起来。
-
-# Linux 等系统设置临时环境变量可以直接输入 <key>=<value>。想要设置永久变量则需 export <key>=<value>
-# 在 window 中设置永久变量，一般是通过界面操作，也就是常见的设置环境变量。
-
-gv
-Get-Variable
-# 查看当前 powershell 的变量
-
-$PSVersionTable
-$host.version
-Get-Host
-# 可查看 powershell 版本
-
-
-
-explorer $env:LOCALAPPDATA
-# pwsh 中使用路径变量正确方式
 ```
-
-Windows 中一些我觉得有用的全局变量
-
-| env                     | path                                   |
-|-------------------------|----------------------------------------|
-| SystemDrive             | C:                                     |
-| HOMEDRIVE               | C:                                     |
-| SystemRoot              | C:\Windows                             |
-| windir                  | C:\Windows                             |
-|                         |                                        |
-| PUBLIC                  | C:\Users\Public                        |
-| USERPROFILE             | C:\Users\{username}                    |
-| APPDATA                 | C:\Users\{username}\AppData\Roaming    |
-| LOCALAPPDATA            | C:\Users\{username}\AppData\Local      |
-| TEMP                    | C:\Users\{username}\AppData\Local\Temp |
-| TMP                     | C:\Users\{username}\AppData\Local\Temp |
-|                         |                                        |
-| ProgramData             | C:\ProgramData                         |
-| ALLUSERSPROFILE         | C:\ProgramData                         |
-| ProgramFiles            | C:\Program Files                       |
-| ProgramFiles(x86)       | C:\Program Files (x86)                 |
-| CommonProgramFiles      | C:\Program Files\Common Files          |
-| CommonProgramFiles(x86) | C:\Program Files (x86)\Common Files    |
-|                         |                                        |
-| COMPUTERNAME            | DESKTOP-???                            |
-| HOMEPATH                | \Users\{username}                      |
-| LOGONSERVER             | \\DESKTOP-???                          |
-| PROCESSOR_ARCHITECTURE  | AMD64                                  |
-| USERDOMAIN              | DESKTOP-???                            |
-| USERNAME                | {username}                             |
 
 
 ### ssh 网络
@@ -221,8 +136,9 @@ Get-NetTCPConnection
 Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 80}
 # 只查看 80 端口的占用情况 $_ 变量表示管道传递的对象。
 
-Get-NetTCPConnection | Where-Object { $_.LocalPort -gt 3000 } | Format-Table -AutoSize
-# 查看大于 3000 端口的占用情况，同时自适应表格宽度。
+Get-NetTCPConnection | Where-Object { $_.LocalPort -ge 3000 } | Format-Table -AutoSize
+# 查看当前正在使用的 TCP 连接和端口信息。然后筛选端口号大于等于 3000 的连接
+
 
 ipconfig /all
 # 查看所有网卡的全部配置信息
@@ -262,33 +178,6 @@ title <内容>
 ### 文件和文件夹
 
 ```sh
-Get-Content G:\backup-mysql\db01.sql | mysql -uroot -p old_db01
-# pwsh 中不支持 >  提示 The '<' operator is reserved for future use.
-# 可以使用 Get-Content 代替。
-
-New-Item -ItemType SymbolicLink -Target (npm root -g) -Path "$HOME\.node_modules" -Force
-# 以管理员方式运行。强制创建文件夹 $HOME\.node_modules，并将其指向 npm 全局模块中。
-# 注意创建的是符号链接，而不是 win 中的快捷方式
-
-cd C:\soft\it\mkcert
-New-Item -ItemType SymbolicLink -Target .\mkcert-v1.4.4-windows-amd64.exe -Path mkcert.exe
-# 为 mkcert-v1.4.4-windows-amd64.exe 创建一个软连接，名为 mkcert.exe 注意要有后缀名 exe
-# 或者，如果已经添加 C:\soft\it\mkcert 到 path，则可以不需要移动到 mkcert，直接：
-New-Item -ItemType SymbolicLink -Target mkcert-v1.4.4-windows-amd64.exe -Path C:\soft\it\mkcert\mkcert.exe
-# 注意两个 .exe 都不能省略。
-
-New-Item -Path '<new_directory_url>' -ItemType Directory
-# 创建文件夹
-
-New-Item -Path '<new_file_url>' -ItemType File
-# 创建文件，如果文件已存在则报错
-
-New-Item -Force -Path '<new_file_url>' -ItemType File
-# 强制创建文件，如果文件已存在则会被覆盖
-
-Get-ChildItem -Path . -Recurse -Exclude "node_modules" -File | Where-Object { $_.Name -like "playwright.config*" }
-# 在该目录下查找 playwright.config 开头文件，并忽略 node_modules 文件夹
-
 (md | mkdir) "<dir_path>"
 # 创建文件夹。注意，路径中有空格时需要使用双引号括起来，不能使用单引号。
 
@@ -339,38 +228,6 @@ attributes disk set readonly
 attributes disk clear readonly
 # 取消当前选中磁盘为只读。无论是移动磁盘还是机械磁盘均能立即生效。
 ```
-
-### 硬件相关信息
-
-
-```sh
-(Get-CimInstance win32_processor).NumberOfLogicalProcessors
-# 获取逻辑处理器个数
-
-
-
-
-
-
-# 获取硬件 ID 相关命令。注意，没有什么是能够绝对标识唯一主机的，相对靠谱的是主板 UUID。
-
-systeminfo
-# 可获取网卡 MAC 地址。此外还可以获取系统很多信息，网卡、系统、BIOS、内存、时区等等
-
-wmic cpu get processorid
-# 可以获取 CPU ID。（并不唯一，Intel现在可能同一批次的CPU ID都一样）
-# 实测，重装系统不会改变它
-
-wmic diskdrive get serialnumber
-# 获取硬盘序列号。（不一定所有的电脑都能获取到硬盘序列号）
-# 实测，重装系统不会改变它
-
-wmic csproduct get UUID
-# 主板序列号（不是所有的厂商都提供一个UUID，可能返回一个全 F 的无效 UUID）
-# dmidecode -s system-uuid 用于 linux 获取主板 UUID
-# 实测，重装系统不会改变它
-```
-
 
 ## 命令案例解决方案
 
