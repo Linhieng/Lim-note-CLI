@@ -59,6 +59,10 @@ $envVariableValue = "C:\soft\it\nginx-1.25.4"
 
 [Environment]::GetEnvironmentVariable("NGINX_HOME")
 # 获取环境变量
+
+# [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$env:NGINX_HOME", [System.EnvironmentVariableTarget]::Machine)
+# [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$env:NGINX_HOME", "User")
+# ⚠️测试这个命令前，先备份好原本的环境变量
 ```
 
 - `env:`
@@ -77,10 +81,23 @@ ls env:
 # 能获取什么级别，取决于运行的模式（用户还是管理员）
 
 $env:<key> = "<value>"
-# 设置临时环境变量，
+# 设置临时环境变量
 
 explorer $env:LOCALAPPDATA
 # 使用环境变量
+
+$env:PATH.Split(';')
+# 查看 path 环境变量
+```
+
+通过注册表获取环境相关环境变量
+
+```powershell
+(Get-Item -Path "Registry::HKEY_CURRENT_USER\Environment").GetValue("Path", "", "DoNotExpandEnvironmentNames").split(';')
+# 只获取用户级别的环境变量 Path
+
+(Get-Item -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment").GetValue("Path", "", "DoNotExpandEnvironmentNames").Split(';')
+# 只获取系统级别的环境变量 path
 ```
 
 其他
@@ -406,6 +423,12 @@ param (
 
 Write-Host "参数1：$param1"
 Write-Host "参数2：$param2"
+```
+
+### fsutil
+
+```powershell
+fsutil file createnew D:\draft\all-code-tmp\file4.txt $(1024 * 1024 * 2)
 ```
 
 ---
