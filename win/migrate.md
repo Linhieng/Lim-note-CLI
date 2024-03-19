@@ -7,6 +7,33 @@
 - 调用函数时，没有括号！
 - 脚本使用 utf8 BOM 编码
 
+powershell 7 相比 powershell 5 好处：
+
+- 支持预览历史记录
+- 更丰富的语法支持，比如 `&&`
+- 更丰富的特性，快捷键，命令等等，太多了
+- 输出文件默认编码为 UTF8，而不是 UTF16-LF
+- ……
+
+## ✨获取帮助
+
+学习一样东西，最重要的就是知道从哪里获取知识！
+
+```powershell
+Get-Help
+# 了解 powershell
+
+Get-Help <command>
+# 获取每个命令的帮助信息
+
+man <command>
+help <command>
+# 获取具体可配置参数。只是给出格式定义，不会有太多文本说明信息
+
+Get-Help <command> -online
+# 获取在线帮助打开对应命令的在线文档
+```
+
 ## 环境变量
 
 - `[Environment]::SetEnvironmentVariable(KEY, VALUE)`
@@ -236,6 +263,35 @@ $description = "这是一个定时推送本地 git 仓库的计划任务"
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -Description $description
 ```
 
+## 快捷键脚本
+
+```powershell
+Get-PSReadlineKeyHandler
+# 查看快捷键说明。或者可以直接通过 ctrl+alt+? 快捷键。注意问号表示 shift + / 。
+
+
+Set-PSReadLineOption -PredictionSource History
+# 设置预测文本来源为历史记录
+
+
+
+# 默认的 UpArrow 和 DownArrow 按键，只能切换到上一个命令和下一个命令，无法根据已输入的
+# 内容进行搜索，所以常常得用 Ctrl+R 进行搜索。为此，可以修改这两个快捷键：
+
+# 设置 UpArrow 快捷方式为向前搜索
+Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock {
+  [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()
+  [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+} # 设置向上键为后向搜索历史记录
+# 设置 DownArrow 快捷方式为向后搜索
+Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock {
+  [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()
+  [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+}
+```
+
+
+
 ## 零碎，暂不成体系
 
 ### 编码问题
@@ -248,6 +304,9 @@ $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Obj
 ### 命令别名、函数
 
 ```powershell
+Get-Alias
+# 获取所有别名
+
 New-Alias -Name "ls" -Value "Get-ChildItem"
 # 为一个命令提供别名。只能是命令，不支持参数。
 # New-Alias -Name "ll" -Value "get-childitem -af -h" ❌
@@ -325,6 +384,8 @@ ls | ForEach-Object { echo $_ }
 Start-Process -WindowStyle hidden -FilePath pwsh.exe -ArgumentList "D:\draft\all-code-tmp\test.ps1"
 # 隐藏窗口运行脚本
 
+Start-Process -FilePath pwsh.exe -ArgumentList "-File", "D:\draft\all-code-tmp\x.ps1", "-param1", "value1", "-param2", "value2"
+# 运行脚本时提供参数
 ```
 
 ### 脚本参数

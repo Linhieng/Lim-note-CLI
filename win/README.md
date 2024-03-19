@@ -37,9 +37,6 @@
 help <command>
 # ps 和 cmd 通用。推荐 :)
 
-Get-Help <command> -online
-# 获取在线帮助
-
 <cmd> /?
 # 用于 cmd 中获取帮助
 
