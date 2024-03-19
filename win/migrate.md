@@ -238,6 +238,13 @@ Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Se
 
 ## 零碎，暂不成体系
 
+### 编码问题
+
+```powershell
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+# 使用 chcp 修改无效的，得通过这种方式修改才有效
+```
+
 ### 命令别名、函数
 
 ```powershell
