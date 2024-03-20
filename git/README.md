@@ -19,6 +19,7 @@ $ git -h <command>
 - git 的基本操作。
     - 暂存与提交
         - [add](./reference/basic.md#add)
+        - [stage](./reference/basic.md#stage)
         - [mv](./reference/basic.md#mv)
         - [rm](./reference/basic.md#rm)
         - [restore](./reference/basic.md#restore)
@@ -192,3 +193,7 @@ HEAD 的含义永远都是当前位置，当我们对分支进行任意操作时
 - 在解决完冲突文件后，通过 `git add <pathspec>`，标记冲突已被解决，并将所做的更改添加到暂存区。
 - 如果解决冲突后，只想将其标记冲突已解决，但并不想将更改添加到暂存区，则使用 `git restore --staged <file>` 命令。
 - 如果想直接删除冲突文件，可以执行 `git rm <pathspec>` 命令，它能删除文件，同时标记冲突已被解决，并将所做的更改添加到暂存区。
+
+## 参考
+
+- [官方文档 git 术语表，用于理解各种概念！](https://git-scm.com/docs/gitglossary/en)

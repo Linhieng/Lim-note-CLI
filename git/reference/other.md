@@ -39,9 +39,17 @@ Stash the changes in a dirty working directory away
 
 ```sh
 $ git stash
-# 将当前未提交的变更（包括暂存）移入临时回收站（dirty working directory）
+# 将当前工作目录中的更改（不包括未必追踪的文件）藏匿起来（移入 dirty working directory）
+$ git stash save "message"
+# 将当前工作目录中的更改藏匿起来，并附加一条消息。
+$ git stash apply
+# 将最新的藏匿恢复到当前工作目录中，但不会从藏匿堆栈中删除它。
 $ git stash pop
-# 将临时回收站（dirty working directory）中的内容拿出来
+# 将最新的藏匿恢复到当前工作目录中，并从藏匿堆栈中删除它。
+$ git stash list
+# 显示当前所有藏匿的更改列表。
+$ git stash drop stash@{n}
+# 删除指定的藏匿，其中n是藏匿的索引号，从0开始计数。
 ```
 
 ## ls-remote

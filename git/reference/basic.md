@@ -10,6 +10,12 @@ $ git add (-A | --all)
 # 效果上就是所有变更（changes, 包括 modified, deleted）和新文件（untracked）都被添加到暂存区（temporary staging area）。
 ```
 
+## stage
+
+Add file contents to the staging area
+
+This is a synonym for git-add
+
 ## mv
 
 Move or rename a file, a directory, or a symlink.
