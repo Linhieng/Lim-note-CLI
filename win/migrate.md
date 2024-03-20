@@ -15,6 +15,10 @@ powershell 7 相比 powershell 5 好处：
 - 输出文件默认编码为 UTF8，而不是 UTF16-LF
 - ……
 
+使用案例：
+
+- 每天定时将本地仓库进行 push。参考 [AutoTask]
+
 ## ✨获取帮助
 
 学习一样东西，最重要的就是知道从哪里获取知识！
@@ -307,7 +311,15 @@ Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock {
 }
 ```
 
+## 字符串
 
+```powershell
+$string = "C:\a\b\c"
+$newString = $string -replace '\\', '/'
+Write-Output $newString # C:/a/b/c
+$newString = $string.Replace('\', '-')
+Write-Output $newString # C:-a-b-c
+```
 
 ## 零碎，暂不成体系
 
@@ -432,4 +444,5 @@ fsutil file createnew D:\draft\all-code-tmp\file4.txt $(1024 * 1024 * 2)
 ```
 
 ---
+[AutoTask]: https://github.com/Linhieng/AutoTask
 [new-scheduledtasksettingsset]: https://www.pdq.com/powershell/new-scheduledtasksettingsset/#RunOnlyIfNetworkAvailable
